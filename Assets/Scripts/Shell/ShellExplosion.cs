@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ShellExplosion : MonoBehaviour
+public class ShellExplosion : Shell
 {
     public LayerMask m_TankMask;
     public ParticleSystem m_ExplosionParticles;

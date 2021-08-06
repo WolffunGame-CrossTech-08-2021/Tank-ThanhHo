@@ -4,15 +4,16 @@ using UnityEngine.UI;
 public class TankShooting : MonoBehaviour
 {
     public int m_PlayerNumber = 1;       
-    public Rigidbody m_Shell;            
-    public Transform m_FireTransform;    
-    public Slider m_AimSlider;           
-    public AudioSource m_ShootingAudio;  
-    public AudioClip m_ChargingClip;     
-    public AudioClip m_FireClip;         
-    public float m_MinLaunchForce = 15f; 
-    public float m_MaxLaunchForce = 30f; 
-    public float m_MaxChargeTime = 0.75f;
+    [SerializeField] Shell m_Shell;            
+    [SerializeField] Transform m_FireTransform;    
+    [SerializeField] Slider m_AimSlider;           
+    [SerializeField] AudioSource m_ShootingAudio;  
+    [SerializeField] AudioClip m_ChargingClip;     
+    [SerializeField] AudioClip m_FireClip;         
+    [SerializeField] float m_MinLaunchForce = 15f; 
+    [SerializeField] float m_MaxLaunchForce = 30f; 
+    [SerializeField] float m_MaxChargeTime = 0.75f;
+    [SerializeField] TankInfo m_TankInfo;
 
     private enum GunState
     {
@@ -25,7 +26,8 @@ public class TankShooting : MonoBehaviour
     private string m_FireButton;         
     private float m_CurrentLaunchForce;  
     private float m_ChargeSpeed;         
-    private bool m_Fired;                
+    private bool m_Fired;
+    private Rigidbody m_ShellRigidBody;
 
 
     private void OnEnable()
@@ -97,10 +99,14 @@ public class TankShooting : MonoBehaviour
     private void Fire()
     {
         // Instantiate and launch the shell.
-        Rigidbody shell = Instantiate(m_Shell);
-        shell.transform.position = m_FireTransform.position;
-        shell.transform.rotation = m_FireTransform.rotation;
+        Shell shell = Instantiate(m_Shell);
 
-        shell.velocity = m_CurrentLaunchForce * shell.transform.forward;
+        shell.m_Owner = m_TankInfo;
+
+        Rigidbody shellRigidBody = shell.GetComponent<Rigidbody>();
+        shellRigidBody.transform.position = m_FireTransform.position;
+        shellRigidBody.transform.rotation = m_FireTransform.rotation;
+
+        shellRigidBody.velocity = m_CurrentLaunchForce * shell.transform.forward;
     }
 }
