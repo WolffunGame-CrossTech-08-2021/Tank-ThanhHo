@@ -12,10 +12,16 @@ public class ShellExplosion : Shell
     public float m_ExplosionRadius = 5f;
     [SerializeField] private Explosion m_ExplossionPrefab;
     private bool m_Exploded = false;
+    [SerializeField] private Rigidbody m_RigidBody;
 
     private void Start()
     {
         Destroy(gameObject, m_MaxLifeTime);
+    }
+
+    private void Update()
+    {
+        transform.forward = m_RigidBody.velocity.normalized;
     }
 
 
