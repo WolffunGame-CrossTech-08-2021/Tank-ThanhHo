@@ -2,17 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TargetedEffect : MonoBehaviour
+public class TargetedEffect : Effect
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	public Vector3 GetTargetPosition()
+	{
+		return m_Target.transform.position;
+	}
 }
