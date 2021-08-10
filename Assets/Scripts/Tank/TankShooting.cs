@@ -1,106 +1,75 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class TankShooting : MonoBehaviour
 {
     public int m_PlayerNumber = 1;       
-    public Rigidbody m_Shell;            
-    public Transform m_FireTransform;    
-    public Slider m_AimSlider;           
-    public AudioSource m_ShootingAudio;  
-    public AudioClip m_ChargingClip;     
-    public AudioClip m_FireClip;         
-    public float m_MinLaunchForce = 15f; 
-    public float m_MaxLaunchForce = 30f; 
-    public float m_MaxChargeTime = 0.75f;
+    [SerializeField] List<Shell> m_Shells;
+    [SerializeField] Transform m_FireTransform;
+    [SerializeField] TankInfo m_TankInfo;
 
-    private enum GunState
-    {
-        Idle,
-        Charging,
-        Fire,
-    }
-
-    GunState m_Gunstate;
-    private string m_FireButton;         
-    private float m_CurrentLaunchForce;  
-    private float m_ChargeSpeed;         
-    private bool m_Fired;                
-
+    private BaseShellActivator m_CurrentActivator;
+    private string m_Bullet1Button;
+    private string m_Bullet2Button;
+    private string m_Bullet3Button;
+    private string m_Bullet4Button;
 
     private void OnEnable()
     {
-        m_CurrentLaunchForce = m_MinLaunchForce;
-        m_AimSlider.value = m_MinLaunchForce;
     }
 
 
     private void Start()
     {
-        m_FireButton = "Fire" + m_PlayerNumber;
+        if (m_Shells.Count <= 0) return;
 
-        m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
+        m_Bullet1Button = "Player" + m_PlayerNumber + "_Bullet1";
+        m_Bullet2Button = "Player" + m_PlayerNumber + "_Bullet2";
+        m_Bullet3Button = "Player" + m_PlayerNumber + "_Bullet3";
+        m_Bullet4Button = "Player" + m_PlayerNumber + "_Bullet4";
+
+        ChooseBullet(0);
     }
-    
+
+    private void ChooseBullet(int index)
+    {
+        if(m_CurrentActivator != null)
+        {
+            Destroy(m_CurrentActivator.gameObject);
+        }
+
+        m_CurrentActivator = m_Shells[index].GetActivator();
+
+        m_CurrentActivator.SetFireTransform(m_FireTransform);
+        m_CurrentActivator.SetOwner(m_TankInfo);
+        m_CurrentActivator.SetPlayerNumber(m_PlayerNumber);
+
+        m_CurrentActivator.transform.parent = transform;
+        m_CurrentActivator.transform.position = transform.position;
+        m_CurrentActivator.transform.localRotation = Quaternion.Euler(Vector3.zero);
+
+        m_CurrentActivator.Activate();
+    }
 
     private void Update()
     {
-        // Track the current state of the fire button and make decisions based on the current launch force.
-        if(m_Gunstate == GunState.Idle)
+        if(Input.GetButtonDown(m_Bullet1Button))
         {
-            m_AimSlider.value = m_MinLaunchForce;
-            if (Input.GetButtonDown(m_FireButton))
-            {
-                m_Gunstate = GunState.Charging;
-                m_ShootingAudio.clip = m_ChargingClip;
-                m_ShootingAudio.loop = true;
-                m_ShootingAudio.Play();
-            }
+            ChooseBullet(0);
         }
-        else if(m_Gunstate == GunState.Charging)
+        else if (Input.GetButtonDown(m_Bullet2Button))
         {
-            m_CurrentLaunchForce += m_ChargeSpeed * Time.deltaTime;
-            m_AimSlider.value = m_CurrentLaunchForce;
-            
-
-            if(Input.GetButtonUp(m_FireButton))
-            {
-                m_Gunstate = GunState.Fire;
-            }
-
-            if(m_CurrentLaunchForce >= m_MaxLaunchForce)
-            {
-                m_CurrentLaunchForce = m_MaxLaunchForce;
-                m_Gunstate = GunState.Fire;
-                
-            }
+            Debug.Log("cnsa");
+            ChooseBullet(1);
         }
-        else if(m_Gunstate == GunState.Fire)
+        else if (Input.GetButtonDown(m_Bullet3Button))
         {
-            Fire();
-
-            m_ShootingAudio.clip = m_FireClip;
-            m_ShootingAudio.loop = false;
-            m_ShootingAudio.Play();
-
-            m_CurrentLaunchForce = m_MinLaunchForce;
-            m_Gunstate = GunState.Idle;
-            m_AimSlider.value = m_MinLaunchForce;
+            ChooseBullet(2);
         }
-        else
+        else if (Input.GetButtonDown(m_Bullet4Button))
         {
-            Debug.LogError("Tank shooting goes into undefined state");
+            ChooseBullet(3);
         }
-    }
 
-
-    private void Fire()
-    {
-        // Instantiate and launch the shell.
-        Rigidbody shell = Instantiate(m_Shell);
-        shell.transform.position = m_FireTransform.position;
-        shell.transform.rotation = m_FireTransform.rotation;
-
-        shell.velocity = m_CurrentLaunchForce * shell.transform.forward;
     }
 }
