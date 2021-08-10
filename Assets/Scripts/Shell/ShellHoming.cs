@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using JetBrains.Rider.Unity.Editor;
 using UnityEngine;
 
-public class ShellHoming : Shell
+public class ShellHoming : Shell, DirectionalShell
 {
 	[SerializeField] private LayerMask m_TankMask;
 	[SerializeField] private float m_MovingSpeed;
@@ -17,7 +17,7 @@ public class ShellHoming : Shell
 	[SerializeField] private Rigidbody m_RigidBody;
 	[SerializeField] private float m_MaxDamage;
 	[SerializeField] private float m_MaxForce;
-
+	[SerializeField] private PressActivator m_PressActivator;
 	[SerializeField] private Explosion m_ExplosionPrefab;
 	
 	private Vector3 m_CurrentDirection;
@@ -55,9 +55,6 @@ public class ShellHoming : Shell
 
 	private void Start()
 	{
-		m_CurrentDirection = m_RigidBody.velocity.normalized;
-		m_CurrentDirection.y = 0;
-
 		m_RigidBody.isKinematic = true;
 
 		transform.forward = m_CurrentDirection;
@@ -102,4 +99,18 @@ public class ShellHoming : Shell
 		m_CurrentDirection.Normalize();
 		transform.forward = m_CurrentDirection;
 	}
+
+    public override BaseShellActivator GetActivator()
+    {
+		PressActivator activatorInstance = Instantiate(m_PressActivator);
+		activatorInstance.SetShell(this);
+
+		return activatorInstance;
+    }
+
+    public void SetDirection(Vector3 direction)
+    {
+		m_CurrentDirection = direction;
+		m_CurrentDirection.y = 0;
+    }
 }

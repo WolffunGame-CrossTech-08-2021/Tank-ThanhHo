@@ -14,6 +14,7 @@ public class ShellSplit : Shell
     [SerializeField] float m_SplitAngle;
     [SerializeField] float m_SubShellLiftUpAngle;
     [SerializeField] float m_SubShellInitialDistance;
+    [SerializeField] PressHoldingActivator m_PressHoldingActivator;
 
     private float m_CurrentLifetime;
 
@@ -72,5 +73,13 @@ public class ShellSplit : Shell
         m_Explosion.Explode();
 
         Destroy(gameObject);
+    }
+
+    public override BaseShellActivator GetActivator()
+    {
+        PressHoldingActivator activatorInstance = Instantiate(m_PressHoldingActivator);
+        activatorInstance.SetShell(this);
+
+        return activatorInstance;
     }
 }

@@ -13,6 +13,7 @@ public class ShellExplosion : Shell
     [SerializeField] private Explosion m_ExplossionPrefab;
     private bool m_Exploded = false;
     [SerializeField] private Rigidbody m_RigidBody;
+    [SerializeField] private PressHoldingActivator m_PressHoldingActivator;
 
     private void Start()
     {
@@ -38,5 +39,13 @@ public class ShellExplosion : Shell
         
         explosionInstance.Explode();
         Destroy(gameObject);
+    }
+
+    public override BaseShellActivator GetActivator()
+    {
+        PressHoldingActivator activatorInstance = Instantiate(m_PressHoldingActivator);
+        activatorInstance.SetShell(this);
+
+        return activatorInstance;
     }
 }

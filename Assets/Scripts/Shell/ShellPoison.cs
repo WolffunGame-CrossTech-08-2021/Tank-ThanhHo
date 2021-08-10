@@ -11,6 +11,8 @@ public class ShellPoison : Shell
     [SerializeField] float m_PoisonAreaDuration;
     [SerializeField] float m_PoisonEffectDuration;
     [SerializeField] float m_Dps;
+    [SerializeField] PressHoldingActivator m_PressHoldingActivator;
+
     private void Update()
     {
         transform.forward = m_Rigidbody.velocity.normalized;
@@ -28,5 +30,13 @@ public class ShellPoison : Shell
         poisonAreaInstance.SetUp(m_Owner, m_PoisonRadius, m_PoisonAreaDuration, m_PoisonEffectDuration, m_Dps);
 
         Destroy(gameObject);
+    }
+
+    public override BaseShellActivator GetActivator()
+    {
+        PressHoldingActivator activatorInstance = Instantiate(m_PressHoldingActivator);
+        activatorInstance.SetShell(this);
+
+        return activatorInstance;
     }
 }
