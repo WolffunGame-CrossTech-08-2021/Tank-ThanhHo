@@ -8,8 +8,8 @@ public class PoisonArea : MonoBehaviour
     [SerializeField] float m_PoisonEffectDuration;
     [SerializeField] float m_AreaDuration;
     [SerializeField] float m_Dps;
-    [SerializeField] PoisonEffect m_PoisonEffectPrefab;
-    [SerializeField] SphereCollider poisonAreaCollider;
+
+    public PoisonEffect m_PoisonEffectPrefab;
 
     Dictionary<TankInfo, PoisonEffect> m_AffectedTanks;
     Dictionary<TankInfo, PoisonEffect> m_TanksInArea;

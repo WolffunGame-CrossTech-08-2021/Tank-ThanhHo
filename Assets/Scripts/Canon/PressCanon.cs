@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PressActivator : BaseShellActivator
+public class PressCanon : BaseCanon
 {
-    [SerializeField] AudioSource m_ShootingAudio;
-    [SerializeField] AudioClip m_FireClip;
 
     private bool activated = false;
     private string m_FireButton;
-    private Shell m_Shell;
 
     public override void Activate()
     {
@@ -42,7 +39,7 @@ public class PressActivator : BaseShellActivator
         }
     }
 
-    private void Fire()
+    protected override void Fire()
     {
         if (!(m_Shell is DirectionalShell))
         {
@@ -50,21 +47,15 @@ public class PressActivator : BaseShellActivator
             return;
         }
 
-        Shell shellInstance = Instantiate(m_Shell);
+        Shell shellInstance = InstantiateShell();
 
-        shellInstance.m_Owner = m_Owner;
         DirectionalShell shellDirection = shellInstance as DirectionalShell;
 
         shellInstance.transform.position = m_FireTransform.position;
         shellDirection.SetDirection(m_FireTransform.forward);
 
-        PlayShootingAudio();
-    }
+        NotifyCreateShell(shellInstance);
 
-    private void PlayShootingAudio()
-    {
-        m_ShootingAudio.clip = m_FireClip;
-        m_ShootingAudio.loop = false;
-        m_ShootingAudio.Play();
+        base.Fire();
     }
 }

@@ -6,28 +6,25 @@ using UnityEngine;
 
 public class ShellHoming : Shell, DirectionalShell
 {
-	[SerializeField] private LayerMask m_TankMask;
+	[SerializeField] private LayerMask m_TargetTankMask;
 	[SerializeField] private float m_MovingSpeed;
 	[SerializeField] private float m_TurnSpeed;
 	[SerializeField] private TargetedEffect m_TargetedEffect;
 	[SerializeField] private float m_ActiveRadius;
-	[SerializeField] private float m_MaxLifetime;
 	[SerializeField] private SphereDetector m_TargetDetector;
 	[SerializeField] private ColliderDetector m_HitboxDetector;
-	[SerializeField] private Rigidbody m_RigidBody;
-	[SerializeField] private float m_MaxDamage;
-	[SerializeField] private float m_MaxForce;
-	[SerializeField] private PressActivator m_PressActivator;
-	[SerializeField] private Explosion m_ExplosionPrefab;
 	
 	private Vector3 m_CurrentDirection;
 	private TankInfo m_CurrentTarget;
 	
+	/// <summary>
+	/// Called when something enter target detector's area
+	/// </summary>
 	private void OnObjectEnter(GameObject other)
 	{
 		if (m_CurrentTarget != null) return;
 
-		if (!Utilities.LayerMaskContain(m_TankMask, other.layer)) return;
+		if (!Utilities.LayerMaskContain(m_TargetTankMask, other.layer)) return;
 		
 		TankInfo targetInfo = other.GetComponent<TankInfo>();
 
@@ -44,22 +41,27 @@ public class ShellHoming : Shell, DirectionalShell
 
 	private void OnHitboxCollide(GameObject other)
 	{
-		Explosion explosionInstance = Instantiate(m_ExplosionPrefab);
-		explosionInstance.m_MaxDamage = m_MaxDamage;
-		explosionInstance.m_ExplosionForce = m_MaxForce;
-		explosionInstance.transform.position = transform.position;
-		explosionInstance.Explode();
-		
-		Destroy(gameObject);
+		base.OnExplode();
 	}
 
-	private void Start()
+    protected override void OnTriggerEnter(Collider other)
+    {
+        // We do nothing because the shell homing put collider on the child game object,
+		// 1 for target detect, another for hitbox detect
+		// so the trigger here is call whenever a child's collider is triggered.
+
+		// We need to override because base class do something with OnTriggerEnter.
+
+		// Instead, use OnHitboxCollide and OnObjectEnter for desired functional.
+    }
+
+    protected override void Start()
 	{
+		base.Start();
+
 		m_RigidBody.isKinematic = true;
 
 		transform.forward = m_CurrentDirection;
-
-		Destroy(this.gameObject, m_MaxLifetime);
 
 		m_TargetDetector.SetRadius(m_ActiveRadius);
 
@@ -69,8 +71,10 @@ public class ShellHoming : Shell, DirectionalShell
 		m_HitboxDetector.OnObjectEnter += OnHitboxCollide;
 	}
 
-	private void Update()
+	protected override void Update()
 	{
+		base.Update();
+
 		if (m_CurrentTarget != null)
 		{
 			Turn();
@@ -82,7 +86,6 @@ public class ShellHoming : Shell, DirectionalShell
 	private void MoveFoward()
 	{
 		Vector3 movement = m_CurrentDirection * m_MovingSpeed * Time.deltaTime;
-		//Debug.Log(m_RigidBody.position + " : " + transform.position);
 		Vector3 newPosition = m_RigidBody.position + movement;
 		m_RigidBody.MovePosition(newPosition);
 	}
@@ -99,14 +102,6 @@ public class ShellHoming : Shell, DirectionalShell
 		m_CurrentDirection.Normalize();
 		transform.forward = m_CurrentDirection;
 	}
-
-    public override BaseShellActivator GetActivator()
-    {
-		PressActivator activatorInstance = Instantiate(m_PressActivator);
-		activatorInstance.SetShell(this);
-
-		return activatorInstance;
-    }
 
     public void SetDirection(Vector3 direction)
     {
