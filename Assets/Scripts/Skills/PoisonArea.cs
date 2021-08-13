@@ -11,8 +11,7 @@ public class PoisonArea : MonoBehaviour
 
     public PoisonEffect m_PoisonEffectPrefab;
 
-    Dictionary<TankInfo, PoisonEffect> m_AffectedTanks;
-    Dictionary<TankInfo, PoisonEffect> m_TanksInArea;
+    List<TankInfo> m_TanksInArea;
 
     TankInfo m_Owner;
 
@@ -26,8 +25,7 @@ public class PoisonArea : MonoBehaviour
         m_Dps = dps;
 
         transform.localScale = new Vector3(poisonRadius, poisonRadius, poisonRadius);
-        m_AffectedTanks = new Dictionary<TankInfo, PoisonEffect>();
-        m_TanksInArea = new Dictionary<TankInfo, PoisonEffect>();
+        m_TanksInArea = new List<TankInfo>();
     }
 
     private void Start()
@@ -37,9 +35,9 @@ public class PoisonArea : MonoBehaviour
 
     private void Update()
     {
-        foreach(var tank in m_TanksInArea)
+        foreach (var tank in m_TanksInArea)
         {
-            tank.Value.ResetDuration();
+            AddEffect(tank);
         }
     }
 
@@ -53,28 +51,25 @@ public class PoisonArea : MonoBehaviour
 
             if (tankInfo == m_Owner) return;
 
-            if(!m_AffectedTanks.ContainsKey(tankInfo) || m_AffectedTanks[tankInfo] == null)
-            {
-                PoisonEffect poisonEffectInstance = Instantiate(m_PoisonEffectPrefab);
-                poisonEffectInstance.m_Dps = m_Dps;
-                poisonEffectInstance.m_MaxDuration = m_PoisonEffectDuration;
-                
+            m_TanksInArea.Add(tankInfo);
 
-                tankInfo.AddEffect(poisonEffectInstance);
-                m_AffectedTanks[tankInfo] = poisonEffectInstance;
-            }
-            else
-            {
-                m_AffectedTanks[tankInfo].ResetDuration();
-            }
-
-            m_TanksInArea[tankInfo] = m_AffectedTanks[tankInfo];
+            AddEffect(tankInfo);
         }
+    }
+
+    private void AddEffect(TankInfo tankInfo)
+    {
+        PoisonEffect poisonEffectInstance = Instantiate(m_PoisonEffectPrefab);
+        poisonEffectInstance.m_Dps = m_Dps;
+        poisonEffectInstance.m_MaxDuration = m_PoisonEffectDuration;
+
+
+        tankInfo.AddEffect(poisonEffectInstance);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             var tankInfo = other.GetComponent<TankInfo>();
 

@@ -21,12 +21,14 @@ public class Shell : MonoBehaviour
     protected virtual void Update()
     {
         transform.forward = m_RigidBody.velocity.normalized;
+        UpdateTimeToLive();
+    }
 
+    protected virtual void UpdateTimeToLive()
+    {
         m_CurrentTimeToLive -= Time.deltaTime;
 
-        Debug.Log(m_CurrentTimeToLive);
-
-        if(m_CurrentTimeToLive <= 0)
+        if (m_CurrentTimeToLive <= 0)
         {
             OnEndTimeToLive();
         }

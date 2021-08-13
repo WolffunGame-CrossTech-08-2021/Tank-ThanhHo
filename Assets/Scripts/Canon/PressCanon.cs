@@ -41,7 +41,7 @@ public class PressCanon : BaseCanon
 
     protected override void Fire()
     {
-        if (!(m_Shell is DirectionalShell))
+        if (!(m_Shell is IDirectionalShell))
         {
             Debug.Log("Press Activator: Shell is not directional shell");
             return;
@@ -49,7 +49,7 @@ public class PressCanon : BaseCanon
 
         Shell shellInstance = InstantiateShell();
 
-        DirectionalShell shellDirection = shellInstance as DirectionalShell;
+        IDirectionalShell shellDirection = shellInstance as IDirectionalShell;
 
         shellInstance.transform.position = m_FireTransform.position;
         shellDirection.SetDirection(m_FireTransform.forward);

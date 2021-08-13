@@ -25,7 +25,7 @@ public class TankShooting : MonoBehaviour
 
     private void Start()
     {
-        m_CurrentCanon = Instantiate(m_CanonPrefab);
+        m_CurrentCanon = Instantiate(m_CanonPrefab, transform.position, transform.rotation);
         m_CurrentCanon.transform.parent = transform;
 
         m_CurrentCanon.SetOwner(m_TankInfo);

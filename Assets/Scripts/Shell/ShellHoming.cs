@@ -4,25 +4,25 @@ using System.Collections.Generic;
 using JetBrains.Rider.Unity.Editor;
 using UnityEngine;
 
-public class ShellHoming : Shell, DirectionalShell
+public class ShellHoming : Shell, IDirectionalShell
 {
 	[SerializeField] private LayerMask m_TargetTankMask;
 	[SerializeField] private float m_MovingSpeed;
 	[SerializeField] private float m_TurnSpeed;
-	[SerializeField] private TargetedEffect m_TargetedEffect;
+	[SerializeField] private TargetedEffect m_TargetedEffectPrefab;
 	[SerializeField] private float m_ActiveRadius;
 	[SerializeField] private SphereDetector m_TargetDetector;
 	[SerializeField] private ColliderDetector m_HitboxDetector;
 	
 	private Vector3 m_CurrentDirection;
-	private TankInfo m_CurrentTarget;
+	private TargetedEffect m_CurrentTargetedEffect;
 	
 	/// <summary>
 	/// Called when something enter target detector's area
 	/// </summary>
 	private void OnObjectEnter(GameObject other)
 	{
-		if (m_CurrentTarget != null) return;
+		if (m_CurrentTargetedEffect != null) return;
 
 		if (!Utilities.LayerMaskContain(m_TargetTankMask, other.layer)) return;
 		
@@ -32,8 +32,12 @@ public class ShellHoming : Shell, DirectionalShell
 
 		if (targetInfo != m_Owner)
 		{
-			m_CurrentTarget = targetInfo;
-			m_CurrentTarget.AddEffect(m_TargetedEffect);
+			m_CurrentTargetedEffect = Instantiate(m_TargetedEffectPrefab);
+			m_CurrentTargetedEffect.m_Owner = m_Owner;
+			m_CurrentTargetedEffect.m_MaxDuration = float.PositiveInfinity;
+
+
+			targetInfo.AddEffect(m_CurrentTargetedEffect);
 			
 			m_TargetDetector.enabled = false;
 		}
@@ -65,22 +69,21 @@ public class ShellHoming : Shell, DirectionalShell
 
 		m_TargetDetector.SetRadius(m_ActiveRadius);
 
-		m_TargetedEffect.m_Owner = m_Owner;
-
 		m_TargetDetector.OnObjectEnter += OnObjectEnter;
 		m_HitboxDetector.OnObjectEnter += OnHitboxCollide;
 	}
 
 	protected override void Update()
 	{
-		base.Update();
+		UpdateTimeToLive();
 
-		if (m_CurrentTarget != null)
+		if (m_CurrentTargetedEffect != null)
 		{
 			Turn();
 		}
 		
 		MoveFoward();
+
 	}
 
 	private void MoveFoward()
@@ -92,20 +95,31 @@ public class ShellHoming : Shell, DirectionalShell
 
 	private void Turn()
 	{
-		if (m_CurrentTarget == null) return;
+		if (m_CurrentTargetedEffect == null) return;
 
-		Vector3 targetDirection = m_TargetedEffect.GetTargetPosition() - transform.position;
+		Vector3 targetDirection = m_CurrentTargetedEffect.GetTargetPosition() - transform.position;
 		float maxTurnAngleRadian = Mathf.Deg2Rad * m_TurnSpeed * Time.deltaTime;
 		m_CurrentDirection = Vector3.RotateTowards(m_CurrentDirection, targetDirection, 
 									  maxTurnAngleRadian, 1);
-		
-		m_CurrentDirection.Normalize();
+
+
 		transform.forward = m_CurrentDirection;
+		m_CurrentDirection.Normalize();
 	}
 
     public void SetDirection(Vector3 direction)
     {
 		m_CurrentDirection = direction;
 		m_CurrentDirection.y = 0;
+    }
+
+    override protected void OnDestroy()
+    {
+		base.OnDestroy();
+
+		if(m_CurrentTargetedEffect != null)
+        {
+			m_CurrentTargetedEffect.Destroy();
+		}
     }
 }

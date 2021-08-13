@@ -9,12 +9,21 @@ public class TankInfo : MonoBehaviour
     public float m_MovementSpeed;
     public float m_TurnSpeed;
     public float m_Damage;
+    public TankHealth m_TankHealth;
 
-    List<Effect> m_effects;
+    [SerializeField] List<Effect> m_effects;
 
     private void OnEnable()
     {
-        m_effects = new List<Effect>();
+        if(m_effects == null)
+        {
+            m_effects = new List<Effect>();
+        }
+        else
+        {
+            m_effects.Clear();
+        }
+        
     }
 
     public ReadOnlyCollection<Effect> effects
@@ -25,24 +34,54 @@ public class TankInfo : MonoBehaviour
         }
     }
 
-    /// <returns>
-    /// True: Add success
-    /// False: Add fail
-    /// </returns>
-    public bool AddEffect(Effect effect)
+    public void AddEffect(Effect effect)
     {
-        if(!m_effects.Contains(effect))
+        EffectEnum effectType = effect.GetEffectType();
+
+        if(effect is IPassThroughable)
         {
-            m_effects.Add(effect);
-            effect.m_Target = this;
-            return true;
+            ApplyEffect(effect);
+            return;
         }
 
-        return false;
+        Effect existingEffect = GetEffect(effectType);
+
+        if (existingEffect == null)
+        {
+            ApplyEffect(effect);
+            return;
+        }
+        else
+        {
+            existingEffect.ResetDuration();
+            effect.Destroy();
+
+            if (effect is IStackable)
+            {
+                IStackable stackInfo = existingEffect as IStackable;
+
+                stackInfo.IncreaseStack(1);
+            }
+            return;
+        }
+
+        
+    }
+
+    private void ApplyEffect(Effect effect)
+    {
+        m_effects.Add(effect);
+        effect.m_Target = this;
+        effect.StartEffect();
     }
 
     public bool RemoveEffect(Effect effect)
     {
         return m_effects.Remove(effect);
+    }
+
+    public Effect GetEffect(EffectEnum effectType)
+    {
+        return m_effects.Find(x => x.GetEffectType() == effectType);
     }
 }

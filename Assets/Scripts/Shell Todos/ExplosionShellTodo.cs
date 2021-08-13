@@ -12,6 +12,7 @@ public class ExplosionShellTodo : BaseShellTodo
 	public float m_MaxDamage = 100f;
 	public float m_ExplosionForce = 1000f;
 	public float m_ExplosionRadius = 5f;
+	[SerializeField] InstantDamageEffect m_EffectDamagePrefab;
 
 	private void Explode(Vector3 position)
 	{
@@ -27,13 +28,17 @@ public class ExplosionShellTodo : BaseShellTodo
 				targetRigidBody.AddExplosionForce(m_ExplosionForce, transform.position, m_ExplosionRadius);
 			}
 
-			TankHealth targetHealh = collider.GetComponent<TankHealth>();
+			TankInfo targetInfo = collider.GetComponent<TankInfo>();
 
-			if (targetHealh != null)
+			if (targetInfo != null)
 			{
-				float damage = CalculateDamage(position, targetHealh.transform.position);
+				float damage = CalculateDamage(position, targetInfo.transform.position);
 
-				targetHealh.TakeDamage(damage);
+				InstantDamageEffect effectDamageInstance = Instantiate(m_EffectDamagePrefab);
+
+				effectDamageInstance.damage = damage;
+
+				targetInfo.AddEffect(effectDamageInstance);
 			}
 		}
 
