@@ -1,19 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text;
 
 public abstract class BaseCanon : MonoBehaviour
 {
     [SerializeField] protected AudioSource m_ShootingAudio;
     [SerializeField] protected AudioClip m_FireClip;
-
     public Transform m_FireTransform;
     public int m_PlayerNumber;
     public TankInfo m_Owner;
     public Shell m_Shell;
 
     public System.Action<Shell> OnCreateShell;
-    
+    protected int m_Layer;
+
+    virtual protected void Start()
+    {
+        StringBuilder layerName = new StringBuilder("Shell Hitbox P");
+        layerName.Append(m_PlayerNumber.ToString());
+        Debug.Log(layerName.ToString());
+        m_Layer = LayerMask.NameToLayer(layerName.ToString());
+    }
 
     public abstract void Activate();
 
@@ -47,6 +55,7 @@ public abstract class BaseCanon : MonoBehaviour
 
         shellInstance.m_Owner = m_Owner;
         shellInstance.gameObject.SetActive(true);
+        shellInstance.SetLayer(m_Layer);
 
         return shellInstance;
     }

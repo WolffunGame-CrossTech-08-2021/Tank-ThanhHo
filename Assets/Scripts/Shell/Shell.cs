@@ -13,6 +13,12 @@ public class Shell : MonoBehaviour
 
     protected float m_CurrentTimeToLive;
 
+    public virtual void SetLayer(int layerId)
+    {
+        Debug.Log(layerId);
+        this.gameObject.layer = layerId;
+    }
+
     protected virtual void Start()
     {
         m_CurrentTimeToLive = m_MaxTimeToLive;

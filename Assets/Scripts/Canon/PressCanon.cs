@@ -23,7 +23,7 @@ public class PressCanon : BaseCanon
         m_Shell = shell;
     }
 
-    void Start()
+    protected override void Start()
     {
         m_FireButton = "Fire" + m_PlayerNumber;
     }

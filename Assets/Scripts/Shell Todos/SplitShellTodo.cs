@@ -10,7 +10,6 @@ public class SplitShellTodo : BaseShellTodo
     [SerializeField] Shell m_SubShellPrefab;
     [SerializeField] float m_SplitAngle;
     [SerializeField] float m_SubShellLiftUpAngle;
-    [SerializeField] float m_SubShellInitialDistance;
     [SerializeField] BaseShellTodo m_SubShellExplodeTodoPrefab;
     [SerializeField] float m_SubShellMaxTimeToLive;
 
@@ -19,16 +18,17 @@ public class SplitShellTodo : BaseShellTodo
         Vector3 fowardDirection = shell.transform.forward;
         Vector3 spawnPosition = shell.transform.position;
 
-        SpawnSubShell(shell.m_Owner, m_SubShellMaxTimeToLive, spawnPosition, fowardDirection, -m_SplitAngle);
-        SpawnSubShell(shell.m_Owner, m_SubShellMaxTimeToLive, spawnPosition, fowardDirection, 0);
-        SpawnSubShell(shell.m_Owner, m_SubShellMaxTimeToLive, spawnPosition, fowardDirection, m_SplitAngle);
+        SpawnSubShell(shell, m_SubShellMaxTimeToLive, spawnPosition, fowardDirection, -m_SplitAngle);
+        SpawnSubShell(shell, m_SubShellMaxTimeToLive, spawnPosition, fowardDirection, 0);
+        SpawnSubShell(shell, m_SubShellMaxTimeToLive, spawnPosition, fowardDirection, m_SplitAngle);
     }
 
-    void SpawnSubShell(TankInfo owner, float maxTimeToLive, Vector3 spawnPosition, Vector3 fowardDirection, float angle)
+    void SpawnSubShell(Shell shell, float maxTimeToLive, Vector3 spawnPosition, Vector3 fowardDirection, float angle)
     {
         Shell subShell = Instantiate(m_SubShellPrefab);
-        subShell.m_Owner = owner;
+        subShell.m_Owner = shell.m_Owner;
         subShell.m_MaxTimeToLive = maxTimeToLive;
+        subShell.SetLayer(shell.gameObject.layer);
 
         BaseShellTodo shellTodoInstance = Instantiate(m_SubShellExplodeTodoPrefab);
 
@@ -40,7 +40,7 @@ public class SplitShellTodo : BaseShellTodo
         subShellDirection = Vector3.RotateTowards(subShellDirection, new Vector3(0, 1, 0), Mathf.Deg2Rad * m_SubShellLiftUpAngle, 1);
         subShellDirection.Normalize();
 
-        subShell.transform.position = spawnPosition + m_SubShellInitialDistance * subShellDirection;
+        subShell.transform.position = spawnPosition;
 
         subShellRigidBody.velocity = subShellDirection * m_SubShellForce;
     }

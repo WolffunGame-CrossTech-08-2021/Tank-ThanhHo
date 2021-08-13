@@ -16,11 +16,18 @@ public class ShellHoming : Shell, IDirectionalShell
 	
 	private Vector3 m_CurrentDirection;
 	private TargetedEffect m_CurrentTargetedEffect;
-	
-	/// <summary>
-	/// Called when something enter target detector's area
-	/// </summary>
-	private void OnObjectEnter(GameObject other)
+
+    public override void SetLayer(int layerId)
+    {
+        base.SetLayer(layerId);
+
+		m_HitboxDetector.gameObject.layer = layerId;
+	}
+
+    /// <summary>
+    /// Called when something enter target detector's area
+    /// </summary>
+    private void OnObjectEnter(GameObject other)
 	{
 		if (m_CurrentTargetedEffect != null) return;
 

@@ -20,15 +20,17 @@ public class PressHoldingCanon : BaseCanon
 
     GunState m_Gunstate;
     private string m_FireButton;
-    private float m_CurrentLaunchForce;
+    protected float m_CurrentLaunchForce;
     private float m_ChargeSpeed;
     private bool m_Activated = false;
 
-    private void Start()
+    protected override void Start()
     {
         m_CurrentLaunchForce = m_MinLaunchForce;
         m_AimSlider.value = m_MinLaunchForce;
         m_Gunstate = GunState.Idle;
+
+        base.Start();
     }
 
     public override void Activate()
@@ -105,7 +107,7 @@ public class PressHoldingCanon : BaseCanon
     {
         Shell shell = InstantiateShell();
 
-        Rigidbody shellRigidBody = shell.GetComponent<Rigidbody>();
+        Rigidbody shellRigidBody = shell.m_RigidBody;
         shellRigidBody.transform.position = m_FireTransform.position;
         shellRigidBody.transform.rotation = m_FireTransform.rotation;
 
