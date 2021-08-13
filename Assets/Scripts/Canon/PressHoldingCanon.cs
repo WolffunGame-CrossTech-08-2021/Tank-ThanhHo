@@ -56,7 +56,7 @@ public class PressHoldingCanon : BaseCanon
         m_Shell = shell;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if (!m_Activated) return;
 
