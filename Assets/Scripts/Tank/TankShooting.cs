@@ -5,9 +5,6 @@ public class TankShooting : MonoBehaviour
 {
     public int m_PlayerNumber = 1;       
     [SerializeField] BaseCanon m_CanonPrefab;
-    [SerializeField] Shell m_ShellPrefab;
-    [SerializeField] List<BaseShellTodo> m_ExplodeTodoPrefabs;
-    [SerializeField] List<BaseShellTodo> m_TimeOutTodoPrefabs;
     [SerializeField] Transform m_FireTransform;
     [SerializeField] TankInfo m_TankInfo;
 
@@ -29,11 +26,9 @@ public class TankShooting : MonoBehaviour
         m_CurrentCanon.transform.parent = transform;
 
         m_CurrentCanon.SetOwner(m_TankInfo);
-        m_CurrentCanon.m_Shell = m_ShellPrefab;
         m_CurrentCanon.m_FireTransform = m_FireTransform;
         m_CurrentCanon.m_PlayerNumber = m_PlayerNumber;
         m_CurrentCanon.Activate();
-        m_CurrentCanon.OnCreateShell = OnCreateShell;
 
         //if (m_Shells.Count <= 0) return;
 
@@ -43,21 +38,6 @@ public class TankShooting : MonoBehaviour
         //m_Bullet4Button = "Player" + m_PlayerNumber + "_Bullet4";
 
         //ChooseBullet(0);
-    }
-
-    private void OnCreateShell(Shell shellInstance)
-    {
-        for(int i=0; i<m_TimeOutTodoPrefabs.Count; i++)
-        {
-            BaseShellTodo shellTodoInstance = Instantiate(m_TimeOutTodoPrefabs[i]);
-            shellInstance.AddTimeOutTodo(shellTodoInstance);
-        }
-
-        for (int i = 0; i < m_ExplodeTodoPrefabs.Count; i++)
-        {
-            BaseShellTodo shellTodoInstance = Instantiate(m_ExplodeTodoPrefabs[i]);
-            shellInstance.AddExplodeTodo(shellTodoInstance);
-        }
     }
 
     private void ChooseBullet(int index)

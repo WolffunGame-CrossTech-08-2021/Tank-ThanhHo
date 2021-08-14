@@ -53,7 +53,7 @@ public class PressHoldingCanon : BaseCanon
 
     public void SetShell(Shell shell)
     {
-        m_Shell = shell;
+        m_ShellPrefab = shell;
     }
 
     protected virtual void Update()
