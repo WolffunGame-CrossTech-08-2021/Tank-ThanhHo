@@ -8,10 +8,10 @@ public class PoisonAreaTodo : BaseShellTodo
 {
     [SerializeField] PoisonArea m_PoisonAreaPrefab;
     [SerializeField] ParticleSystem m_ExplossionParticlePrefab;
-    [SerializeField] float m_PoisonRadius;
-    [SerializeField] float m_PoisonAreaDuration;
-    [SerializeField] float m_PoisonEffectDuration;
-    [SerializeField] float m_Dps;
+    public float m_PoisonRadius;
+    public float m_PoisonAreaDuration;
+    public float m_PoisonEffectDuration;
+    public float m_Dps;
 
     private void CreatePoisonArea(Shell shell, float poisonRadius, float poisonAreaDuration, float poisonEffectDuration, float dps)
     {

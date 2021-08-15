@@ -7,9 +7,9 @@ public class PressHoldingCanon : BaseCanon
 {
     [SerializeField] Slider m_AimSlider;
     [SerializeField] AudioClip m_ChargingClip;
-    [SerializeField] float m_MinLaunchForce = 15f;
-    [SerializeField] float m_MaxLaunchForce = 30f;
-    [SerializeField] float m_MaxChargeTime = 0.75f;
+    public float m_MinLaunchForce = 15f;
+    public float m_MaxLaunchForce = 30f;
+    public float m_MaxChargeTime = 0.75f;
 
     private enum GunState
     {
@@ -49,11 +49,6 @@ public class PressHoldingCanon : BaseCanon
         m_Gunstate = GunState.Idle;
 
         m_Activated = false;
-    }
-
-    public void SetShell(Shell shell)
-    {
-        m_ShellPrefab = shell;
     }
 
     protected virtual void Update()

@@ -7,12 +7,11 @@ public abstract class BaseCanon : MonoBehaviour
 {
     [SerializeField] protected AudioSource m_ShootingAudio;
     [SerializeField] protected AudioClip m_FireClip;
-    [SerializeField] List<BaseShellTodo> m_ExplodeTodoPrefabs;
-    [SerializeField] List<BaseShellTodo> m_TimeOutTodoPrefabs;
     [HideInInspector] public Transform m_FireTransform;
     [HideInInspector] public int m_PlayerNumber;
     [HideInInspector] public TankInfo m_Owner;
-    public Shell m_ShellPrefab;
+
+    public BaseShellConfig m_ShellConfig;
 
     public System.Action<Shell> OnCreateShell;
     protected int m_Layer;
@@ -53,23 +52,11 @@ public abstract class BaseCanon : MonoBehaviour
 
     protected virtual Shell InstantiateShell()
     {
-        Shell shellInstance = Instantiate(m_ShellPrefab);
+        Shell shellInstance = m_ShellConfig.GetShell();
 
         shellInstance.m_Owner = m_Owner;
         shellInstance.gameObject.SetActive(true);
         shellInstance.SetLayer(m_Layer);
-
-        for (int i = 0; i < m_TimeOutTodoPrefabs.Count; i++)
-        {
-            BaseShellTodo shellTodoInstance = Instantiate(m_TimeOutTodoPrefabs[i]);
-            shellInstance.AddTimeOutTodo(shellTodoInstance);
-        }
-
-        for (int i = 0; i < m_ExplodeTodoPrefabs.Count; i++)
-        {
-            BaseShellTodo shellTodoInstance = Instantiate(m_ExplodeTodoPrefabs[i]);
-            shellInstance.AddExplodeTodo(shellTodoInstance);
-        }
 
         return shellInstance;
     }

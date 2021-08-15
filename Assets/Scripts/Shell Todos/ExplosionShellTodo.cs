@@ -6,9 +6,9 @@ using UnityEngine;
 [Serializable]
 public class ExplosionShellTodo : BaseShellTodo
 {
-	public LayerMask m_TankMask;
-	public ParticleSystem m_ExplosionParticlesPrefab;
-	public AudioSource m_ExplosionAudio;
+	[SerializeField] LayerMask m_TankMask;
+	[SerializeField] ParticleSystem m_ExplosionParticlesPrefab;
+	[SerializeField] AudioSource m_ExplosionAudio;
 	public float m_MaxDamage = 100f;
 	public float m_ExplosionForce = 1000f;
 	public float m_ExplosionRadius = 5f;

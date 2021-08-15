@@ -18,11 +18,6 @@ public class PressCanon : BaseCanon
         activated = false;
     }
 
-    public void SetShell(Shell shell)
-    {
-        m_ShellPrefab = shell;
-    }
-
     protected override void Start()
     {
         m_FireButton = "Fire" + m_PlayerNumber;
@@ -41,7 +36,7 @@ public class PressCanon : BaseCanon
 
     protected override void Fire()
     {
-        if (!(m_ShellPrefab is IDirectionalShell))
+        if (!(m_ShellConfig.m_ShellPrefab is IDirectionalShell))
         {
             Debug.Log("Press Activator: Shell is not directional shell");
             return;

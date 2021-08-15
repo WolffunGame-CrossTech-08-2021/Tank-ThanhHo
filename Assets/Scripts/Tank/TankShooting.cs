@@ -3,17 +3,15 @@ using System.Collections.Generic;
 
 public class TankShooting : MonoBehaviour
 {
-    public int m_PlayerNumber = 1;       
-    [SerializeField] BaseCanon m_CanonPrefab;
-    [SerializeField] Transform m_FireTransform;
-    [SerializeField] TankInfo m_TankInfo;
+    public int m_PlayerNumber = 1;
+    [SerializeField] List<BaseCanonConfig> m_BaseCanonConfigs;
+    public Transform m_FireTransform;
+    public TankInfo m_TankInfo;
 
-    private string m_Bullet1Button;
-    private string m_Bullet2Button;
-    private string m_Bullet3Button;
-    private string m_Bullet4Button;
+    private string m_SwitchWeaponButton;
 
     private BaseCanon m_CurrentCanon;
+    private int m_CurrentCanonIndex;
 
     private void OnEnable()
     {
@@ -22,63 +20,43 @@ public class TankShooting : MonoBehaviour
 
     private void Start()
     {
-        m_CurrentCanon = Instantiate(m_CanonPrefab, transform.position, transform.rotation);
-        m_CurrentCanon.transform.parent = transform;
+        m_CurrentCanonIndex = 0;
+        ChooseCanon(m_CurrentCanonIndex);
+        m_SwitchWeaponButton = "Player" + m_PlayerNumber + "_SwitchWeapon";
+    }
 
-        m_CurrentCanon.SetOwner(m_TankInfo);
+    private void ChooseCanon(int index)
+    {
+        if (index >= m_BaseCanonConfigs.Count) return;
+
+        if (m_CurrentCanon != null)
+        {
+            Destroy(m_CurrentCanon);
+        }
+
+        m_CurrentCanon = m_BaseCanonConfigs[index].GetCanon();
+
+        Transform canonTransform = m_CurrentCanon.transform;
+        Transform tankShootingTransform = transform;
+
+        canonTransform.parent = tankShootingTransform;
+        canonTransform.localPosition = Vector3.zero;
+        canonTransform.localRotation = Quaternion.identity;
+
+        m_CurrentCanon.m_Owner = m_TankInfo;
         m_CurrentCanon.m_FireTransform = m_FireTransform;
         m_CurrentCanon.m_PlayerNumber = m_PlayerNumber;
         m_CurrentCanon.Activate();
-
-        //if (m_Shells.Count <= 0) return;
-
-        //m_Bullet1Button = "Player" + m_PlayerNumber + "_Bullet1";
-        //m_Bullet2Button = "Player" + m_PlayerNumber + "_Bullet2";
-        //m_Bullet3Button = "Player" + m_PlayerNumber + "_Bullet3";
-        //m_Bullet4Button = "Player" + m_PlayerNumber + "_Bullet4";
-
-        //ChooseBullet(0);
-    }
-
-    private void ChooseBullet(int index)
-    {
-        //if(m_CurrentActivator != null)
-        //{
-        //    Destroy(m_CurrentActivator.gameObject);
-        //}
-
-        //m_CurrentActivator = m_Shells[index].GetActivator();
-
-        //m_CurrentActivator.SetFireTransform(m_FireTransform);
-        //m_CurrentActivator.SetOwner(m_TankInfo);
-        //m_CurrentActivator.SetPlayerNumber(m_PlayerNumber);
-
-        //m_CurrentActivator.transform.parent = transform;
-        //m_CurrentActivator.transform.position = transform.position;
-        //m_CurrentActivator.transform.localRotation = Quaternion.Euler(Vector3.zero);
-
-        //m_CurrentActivator.Activate();
     }
 
     private void Update()
     {
-        //if(Input.GetButtonDown(m_Bullet1Button))
-        //{
-        //    ChooseBullet(0);
-        //}
-        //else if (Input.GetButtonDown(m_Bullet2Button))
-        //{
-        //    Debug.Log("cnsa");
-        //    ChooseBullet(1);
-        //}
-        //else if (Input.GetButtonDown(m_Bullet3Button))
-        //{
-        //    ChooseBullet(2);
-        //}
-        //else if (Input.GetButtonDown(m_Bullet4Button))
-        //{
-        //    ChooseBullet(3);
-        //}
+        if (Input.GetButtonDown(m_SwitchWeaponButton))
+        {
+            m_CurrentCanonIndex++;
+            m_CurrentCanonIndex %= m_BaseCanonConfigs.Count;
 
+            ChooseCanon(m_CurrentCanonIndex);
+        }
     }
 }

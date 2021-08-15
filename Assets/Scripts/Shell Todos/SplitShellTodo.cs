@@ -6,31 +6,29 @@ using UnityEngine;
 [Serializable]
 public class SplitShellTodo : BaseShellTodo
 {
-    [SerializeField] float m_SubShellForce;
-    [SerializeField] Shell m_SubShellPrefab;
-    [SerializeField] float m_SplitAngle;
-    [SerializeField] float m_SubShellLiftUpAngle;
-    [SerializeField] BaseShellTodo m_SubShellExplodeTodoPrefab;
-    [SerializeField] float m_SubShellMaxTimeToLive;
+    public float m_SubShellForce;
+    public BaseShellConfig m_SubShellConfig;
+    public float m_SplitAngle;
+    public float m_SubShellLiftUpAngle;
+    public BaseShellTodoConfig m_SubShellExplodeTodoConfig;
 
     private void Split(Shell shell)
     {
         Vector3 fowardDirection = shell.transform.forward;
         Vector3 spawnPosition = shell.transform.position;
 
-        SpawnSubShell(shell, m_SubShellMaxTimeToLive, spawnPosition, fowardDirection, -m_SplitAngle);
-        SpawnSubShell(shell, m_SubShellMaxTimeToLive, spawnPosition, fowardDirection, 0);
-        SpawnSubShell(shell, m_SubShellMaxTimeToLive, spawnPosition, fowardDirection, m_SplitAngle);
+        SpawnSubShell(shell, spawnPosition, fowardDirection, -m_SplitAngle);
+        SpawnSubShell(shell, spawnPosition, fowardDirection, 0);
+        SpawnSubShell(shell, spawnPosition, fowardDirection, m_SplitAngle);
     }
 
-    void SpawnSubShell(Shell shell, float maxTimeToLive, Vector3 spawnPosition, Vector3 fowardDirection, float angle)
+    void SpawnSubShell(Shell shell, Vector3 spawnPosition, Vector3 fowardDirection, float angle)
     {
-        Shell subShell = Instantiate(m_SubShellPrefab);
+        Shell subShell = m_SubShellConfig.GetShell();
         subShell.m_Owner = shell.m_Owner;
-        subShell.m_MaxTimeToLive = maxTimeToLive;
         subShell.SetLayer(shell.gameObject.layer);
 
-        BaseShellTodo shellTodoInstance = Instantiate(m_SubShellExplodeTodoPrefab);
+        BaseShellTodo shellTodoInstance = m_SubShellExplodeTodoConfig.GetShellTodo();
 
         subShell.AddExplodeTodo(shellTodoInstance);
 

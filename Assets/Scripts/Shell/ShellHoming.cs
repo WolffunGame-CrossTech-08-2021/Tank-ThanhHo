@@ -7,13 +7,14 @@ using UnityEngine;
 public class ShellHoming : Shell, IDirectionalShell
 {
 	[SerializeField] private LayerMask m_TargetTankMask;
-	[SerializeField] private float m_MovingSpeed;
-	[SerializeField] private float m_TurnSpeed;
 	[SerializeField] private TargetedEffect m_TargetedEffectPrefab;
-	[SerializeField] private float m_ActiveRadius;
 	[SerializeField] private SphereDetector m_TargetDetector;
 	[SerializeField] private ColliderDetector m_HitboxDetector;
-	
+
+	public float m_MovingSpeed;
+	public float m_TurnSpeed;
+	public float m_ActiveRadius;
+
 	private Vector3 m_CurrentDirection;
 	private TargetedEffect m_CurrentTargetedEffect;
 
