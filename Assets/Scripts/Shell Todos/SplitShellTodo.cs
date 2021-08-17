@@ -47,4 +47,9 @@ public class SplitShellTodo : BaseShellTodo
     {
         Split(shell);
     }
+
+    public override ShellTodoEnum GetShellTodoType()
+    {
+        return ShellTodoEnum.Split;
+    }
 }

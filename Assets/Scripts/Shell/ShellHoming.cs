@@ -7,7 +7,7 @@ using UnityEngine;
 public class ShellHoming : Shell, IDirectionalShell
 {
 	[SerializeField] private LayerMask m_TargetTankMask;
-	[SerializeField] private TargetedEffect m_TargetedEffectPrefab;
+	//[SerializeField] private TargetedEffect m_TargetedEffectPrefab;
 	[SerializeField] private SphereDetector m_TargetDetector;
 	[SerializeField] private ColliderDetector m_HitboxDetector;
 
@@ -40,7 +40,7 @@ public class ShellHoming : Shell, IDirectionalShell
 
 		if (targetInfo != m_Owner)
 		{
-			m_CurrentTargetedEffect = Instantiate(m_TargetedEffectPrefab);
+			m_CurrentTargetedEffect = EffectPoolFamily.m_Instance.GetObject(EffectEnum.Targeted) as TargetedEffect;
 			m_CurrentTargetedEffect.m_Owner = m_Owner;
 			m_CurrentTargetedEffect.m_MaxDuration = float.PositiveInfinity;
 
@@ -121,13 +121,18 @@ public class ShellHoming : Shell, IDirectionalShell
 		m_CurrentDirection.y = 0;
     }
 
-    override protected void OnDestroy()
+    public override void Destroy()
     {
-		base.OnDestroy();
-
-		if(m_CurrentTargetedEffect != null)
-        {
+		if (m_CurrentTargetedEffect != null)
+		{
 			m_CurrentTargetedEffect.Destroy();
 		}
+
+		base.Destroy();
+	}
+
+    public override ShellEnum GetShellType()
+    {
+		return ShellEnum.Homing;
     }
 }

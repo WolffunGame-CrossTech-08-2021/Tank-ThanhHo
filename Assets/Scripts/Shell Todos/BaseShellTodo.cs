@@ -6,7 +6,8 @@ public abstract class BaseShellTodo : MonoBehaviour
     public abstract void Execute(Shell shell);
     public virtual void Destroy()
     {
-        if(gameObject != null)
-            Destroy(gameObject);
+        ShellTodoPoolFamily.m_Instance.ReturnObjectToPool(GetShellTodoType(), this);
     }
+
+    public abstract ShellTodoEnum GetShellTodoType();
 }

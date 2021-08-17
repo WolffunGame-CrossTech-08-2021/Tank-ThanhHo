@@ -12,12 +12,6 @@ public class ExplosionShellTodoConfig : BaseShellTodoConfig
 
     public override BaseShellTodo GetShellTodo()
     {
-        if(!(m_ShellTodoPrefab is ExplosionShellTodo))
-        {
-            Debug.LogError("Explosion shell todo config cannot create todo that is not type of ExplosionShellTodo");
-            return null;
-        }
-
         ExplosionShellTodo todoInstance = base.GetShellTodo() as ExplosionShellTodo;
         todoInstance.m_MaxDamage = m_MaxDamage;
         todoInstance.m_ExplosionForce = m_ExplosionForce;

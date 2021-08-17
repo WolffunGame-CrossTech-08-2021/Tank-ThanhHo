@@ -49,19 +49,17 @@ public abstract class Effect : MonoBehaviour
                 m_Target.RemoveEffect(this);
             }
 
-            Destroy(this.gameObject);
+            Destroy();
         }
     }
 
     public virtual void Destroy()
     {
-        if(gameObject != null)
+        if(m_Target != null)
         {
-            if(m_Target != null)
-            {
-                m_Target.RemoveEffect(this);
-            }
-            Destroy(this.gameObject);
+            m_Target.RemoveEffect(this);
         }
+
+        EffectPoolFamily.m_Instance.ReturnObjectToPool(GetEffectType(), this);
     }
 }

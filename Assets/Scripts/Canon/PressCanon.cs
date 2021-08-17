@@ -36,11 +36,11 @@ public class PressCanon : BaseCanon
 
     protected override void Fire()
     {
-        if (!(m_ShellConfig.m_ShellPrefab is IDirectionalShell))
-        {
-            Debug.Log("Press Activator: Shell is not directional shell");
-            return;
-        }
+        //if (!(m_ShellConfig.m_ShellPrefab is IDirectionalShell))
+        //{
+        //    Debug.Log("Press Activator: Shell is not directional shell");
+        //    return;
+        //}
 
         Shell shellInstance = InstantiateShell();
 

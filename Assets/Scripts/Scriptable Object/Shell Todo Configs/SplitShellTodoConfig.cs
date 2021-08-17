@@ -14,12 +14,6 @@ public class SplitShellTodoConfig : BaseShellTodoConfig
 
     public override BaseShellTodo GetShellTodo()
     {
-        if (!(m_ShellTodoPrefab is SplitShellTodo))
-        {
-            Debug.LogError("Split shell todo config cannot create todo that is not type of SplitShellTodo");
-            return null;
-        }
-
         SplitShellTodo todoinstance = base.GetShellTodo() as SplitShellTodo;
         todoinstance.m_SubShellForce = m_SubShellForce;
         todoinstance.m_SubShellConfig = m_SubShellConfig;

@@ -5,30 +5,30 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Base Shell Config", menuName = "Scriptable Object/Shells/Base Shell Config")]
 public class BaseShellConfig : ScriptableObject
 {
-    public Shell m_ShellPrefab;
+    public ShellEnum m_ShellType;
     public float m_MaxTimeToLive;
 
     public List<BaseShellTodoConfig> m_TimeOutTodoConfigs;
     public List<BaseShellTodoConfig> m_ExplodeTodoConfigs;
 
-    private void OnValidate()
-    {
-        if (m_ShellPrefab == null) return;
+    //private void OnValidate()
+    //{
+    //    if (m_ShellPrefab == null) return;
 
-        System.Type prefabType = m_ShellPrefab.GetType();
-        System.Type desiredType = GetDesiredShellType();
+    //    System.Type prefabType = m_ShellPrefab.GetType();
+    //    System.Type desiredType = GetDesiredShellType();
 
-        if (!(prefabType == desiredType || prefabType.IsSubclassOf(desiredType)))
-        {
-            Debug.LogError("Canon type is not supported");
-            m_ShellPrefab = null;
-            return;
-        }
-    }
+    //    if (!(prefabType == desiredType || prefabType.IsSubclassOf(desiredType)))
+    //    {
+    //        Debug.LogError("Canon type is not supported");
+    //        m_ShellPrefab = null;
+    //        return;
+    //    }
+    //}
 
     public virtual Shell GetShell()
     {
-        Shell shellInstance = Instantiate(m_ShellPrefab);
+        Shell shellInstance = ShellPoolFamily.m_Instance.GetObject(m_ShellType);
         shellInstance.m_MaxTimeToLive = m_MaxTimeToLive;
 
         shellInstance.ClearTimeOutTodos();
@@ -44,10 +44,5 @@ public class BaseShellConfig : ScriptableObject
         }
 
         return shellInstance;
-    }
-
-    protected virtual System.Type GetDesiredShellType()
-    {
-        return typeof(Shell);
     }
 }

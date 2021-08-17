@@ -12,7 +12,7 @@ public class ExplosionShellTodo : BaseShellTodo
 	public float m_MaxDamage = 100f;
 	public float m_ExplosionForce = 1000f;
 	public float m_ExplosionRadius = 5f;
-	[SerializeField] InstantDamageEffect m_EffectDamagePrefab;
+	//[SerializeField] InstantDamageEffect m_EffectDamagePrefab;
 
 	private void Explode(Vector3 position)
 	{
@@ -34,7 +34,7 @@ public class ExplosionShellTodo : BaseShellTodo
 			{
 				float damage = CalculateDamage(position, targetInfo.transform.position);
 
-				InstantDamageEffect effectDamageInstance = Instantiate(m_EffectDamagePrefab);
+				InstantDamageEffect effectDamageInstance = EffectPoolFamily.m_Instance.GetObject(EffectEnum.InstantDamage) as InstantDamageEffect;
 
 				effectDamageInstance.damage = damage;
 
@@ -67,4 +67,9 @@ public class ExplosionShellTodo : BaseShellTodo
     {
 		Explode(shell.transform.position);
 	}
+
+    public override ShellTodoEnum GetShellTodoType()
+    {
+		return ShellTodoEnum.Explosion;
+    }
 }

@@ -55,7 +55,7 @@ public class Shell : MonoBehaviour
             }
         }
 
-        Destroy(this.gameObject);
+        Destroy();
     }
 
     protected virtual void OnExplode()
@@ -68,13 +68,15 @@ public class Shell : MonoBehaviour
             }
         }
 
-        Destroy(this.gameObject);
+        Destroy();
     }
 
-    protected virtual void OnDestroy()
+    public virtual void Destroy()
     {
         ClearTimeOutTodos();
         ClearExplodeTodo();
+
+        ShellPoolFamily.m_Instance.ReturnObjectToPool(GetShellType(), this);
     }
 
     public virtual void AddTimeOutTodo(BaseShellTodo todo)
@@ -113,5 +115,10 @@ public class Shell : MonoBehaviour
         }
 
         m_ExplodeTodos.Clear();
+    }
+
+    public virtual ShellEnum GetShellType()
+    {
+        return ShellEnum.Base;
     }
 }

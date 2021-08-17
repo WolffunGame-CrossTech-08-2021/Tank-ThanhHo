@@ -12,11 +12,11 @@ public class ShellHomingConfig : BaseShellConfig
 
     public override Shell GetShell()
     {
-        if(!(m_ShellPrefab is ShellHoming))
-        {
-            Debug.LogError("Shell homing config cannot create shell that is not type of ShellHoming");
-            return null;
-        }
+        //if(!(m_ShellPrefab is ShellHoming))
+        //{
+        //    Debug.LogError("Shell homing config cannot create shell that is not type of ShellHoming");
+        //    return null;
+        //}
 
         ShellHoming shellInstance = base.GetShell() as ShellHoming;
         shellInstance.m_MovingSpeed = m_MovingSpeed;
@@ -24,10 +24,5 @@ public class ShellHomingConfig : BaseShellConfig
         shellInstance.m_ActiveRadius = m_ActiveRadius;
 
         return shellInstance;
-    }
-
-    protected override Type GetDesiredShellType()
-    {
-        return typeof(ShellHoming);
     }
 }

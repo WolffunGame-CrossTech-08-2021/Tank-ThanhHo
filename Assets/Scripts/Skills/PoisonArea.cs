@@ -9,7 +9,7 @@ public class PoisonArea : MonoBehaviour
     [SerializeField] float m_AreaDuration;
     [SerializeField] float m_Dps;
 
-    public PoisonEffect m_PoisonEffectPrefab;
+    //public PoisonEffect m_PoisonEffectPrefab;
 
     List<TankInfo> m_TanksInArea;
 
@@ -59,7 +59,7 @@ public class PoisonArea : MonoBehaviour
 
     private void AddEffect(TankInfo tankInfo)
     {
-        PoisonEffect poisonEffectInstance = Instantiate(m_PoisonEffectPrefab);
+        PoisonEffect poisonEffectInstance = EffectPoolFamily.m_Instance.GetObject(EffectEnum.Poison) as PoisonEffect;
         poisonEffectInstance.m_Dps = m_Dps;
         poisonEffectInstance.m_MaxDuration = m_PoisonEffectDuration;
 

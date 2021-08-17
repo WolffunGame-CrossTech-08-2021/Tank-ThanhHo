@@ -13,12 +13,6 @@ public class PoisonAreaTodoConfig : BaseShellTodoConfig
 
     public override BaseShellTodo GetShellTodo()
     {
-        if(!(m_ShellTodoPrefab is PoisonAreaTodo))
-        {
-            Debug.LogError("Poison area todo config cannot create todo that is not type of PoisonAreaTodo");
-            return null;
-        }
-
         PoisonAreaTodo todoinstance = base.GetShellTodo() as PoisonAreaTodo;
         todoinstance.m_PoisonRadius = m_PoisonRadius;
         todoinstance.m_PoisonAreaDuration = m_PoisonAreaDuration;

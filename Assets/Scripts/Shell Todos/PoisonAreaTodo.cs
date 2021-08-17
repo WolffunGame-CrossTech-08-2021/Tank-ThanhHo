@@ -33,4 +33,9 @@ public class PoisonAreaTodo : BaseShellTodo
     {
         CreatePoisonArea(shell, m_PoisonRadius, m_PoisonAreaDuration, m_PoisonEffectDuration, m_Dps);
     }
+
+    public override ShellTodoEnum GetShellTodoType()
+    {
+        return ShellTodoEnum.PoisonArea;
+    }
 }
