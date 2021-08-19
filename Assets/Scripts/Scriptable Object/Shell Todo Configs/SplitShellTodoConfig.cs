@@ -14,14 +14,14 @@ public class SplitShellTodoConfig : BaseShellTodoConfig
 
     public override BaseShellTodo GetShellTodo()
     {
-        SplitShellTodo todoinstance = base.GetShellTodo() as SplitShellTodo;
-        todoinstance.m_SubShellForce = m_SubShellForce;
-        todoinstance.m_SubShellConfig = m_SubShellConfig;
-        todoinstance.m_SplitAngle = m_SplitAngle;
-        todoinstance.m_SubShellLiftUpAngle = m_SubShellLiftUpAngle;
-        todoinstance.m_SubShellExplodeTodoConfig = m_SubShellExplodeTodoConfig;
+        SplitShellTodo todoInstance = base.GetShellTodo() as SplitShellTodo;
+        todoInstance.m_SubShellForce = m_SubShellForce;
+        todoInstance.m_SubShellConfig = m_SubShellConfig;
+        todoInstance.m_SplitAngle = m_SplitAngle;
+        todoInstance.m_SubShellLiftUpAngle = m_SubShellLiftUpAngle;
+        todoInstance.m_SubShellExplodeTodoConfig = m_SubShellExplodeTodoConfig;
 
-        return todoinstance;
+        return todoInstance;
     }
 
     protected override Type GetDesiredTodoType()

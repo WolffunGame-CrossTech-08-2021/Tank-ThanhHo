@@ -7,7 +7,6 @@ using UnityEngine;
 public class ShellHoming : Shell, IDirectionalShell
 {
 	[SerializeField] private LayerMask m_TargetTankMask;
-	//[SerializeField] private TargetedEffect m_TargetedEffectPrefab;
 	[SerializeField] private SphereDetector m_TargetDetector;
 	[SerializeField] private ColliderDetector m_HitboxDetector;
 
@@ -18,11 +17,28 @@ public class ShellHoming : Shell, IDirectionalShell
 	private Vector3 m_CurrentDirection;
 	private TargetedEffect m_CurrentTargetedEffect;
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+		m_TargetDetector.enabled = true;
+		m_HitboxDetector.enabled = true;
+
+	}
+
     public override void SetLayer(int layerId)
     {
         base.SetLayer(layerId);
 
 		m_HitboxDetector.gameObject.layer = layerId;
+	}
+
+    public override void SetUp(Vector3 position, Vector3 direction, float force)
+    {
+		//base.SetUp(position, direction, force);
+		transform.position = position;
+		direction.y = 0;
+		m_CurrentDirection = direction.normalized;
+		transform.forward = m_CurrentDirection;
 	}
 
     /// <summary>
@@ -53,6 +69,7 @@ public class ShellHoming : Shell, IDirectionalShell
 
 	private void OnHitboxCollide(GameObject other)
 	{
+		Debug.Log(other.name);
 		base.OnExplode();
 	}
 
@@ -72,8 +89,6 @@ public class ShellHoming : Shell, IDirectionalShell
 		base.Start();
 
 		m_RigidBody.isKinematic = true;
-
-		transform.forward = m_CurrentDirection;
 
 		m_TargetDetector.SetRadius(m_ActiveRadius);
 
@@ -126,8 +141,10 @@ public class ShellHoming : Shell, IDirectionalShell
 		if (m_CurrentTargetedEffect != null)
 		{
 			m_CurrentTargetedEffect.Destroy();
+			m_CurrentTargetedEffect = null;
 		}
-
+		m_TargetDetector.enabled = false;
+		m_HitboxDetector.enabled = false;
 		base.Destroy();
 	}
 

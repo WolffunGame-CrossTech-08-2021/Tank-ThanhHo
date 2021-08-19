@@ -19,6 +19,13 @@ public abstract class Effect : MonoBehaviour
             _m_Target = value;
         }
     }
+    protected virtual void OnDisable()
+    {
+        m_Target = null;
+        m_Owner = null;
+        m_MaxDuration = 0;
+        m_CurrentDuration = 0;
+    }
 
     public virtual void StartEffect()
     {
@@ -59,6 +66,7 @@ public abstract class Effect : MonoBehaviour
         {
             m_Target.RemoveEffect(this);
         }
+        m_Target = null;
 
         EffectPoolFamily.m_Instance.ReturnObjectToPool(GetEffectType(), this);
     }

@@ -19,7 +19,6 @@ public class PressHoldingCanon : BaseCanon
     }
 
     GunState m_Gunstate;
-    private string m_FireButton;
     protected float m_CurrentLaunchForce;
     private float m_ChargeSpeed;
     private bool m_Activated = false;
@@ -35,8 +34,6 @@ public class PressHoldingCanon : BaseCanon
 
     public override void Activate()
     {
-        m_FireButton = "Fire" + m_PlayerNumber;
-
         m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
 
         m_Activated = true;
@@ -102,11 +99,13 @@ public class PressHoldingCanon : BaseCanon
     {
         Shell shell = InstantiateShell();
 
-        Rigidbody shellRigidBody = shell.m_RigidBody;
-        shellRigidBody.transform.position = m_FireTransform.position;
-        shellRigidBody.transform.rotation = m_FireTransform.rotation;
+        shell.SetUp(m_FireTransform.position, m_FireTransform.forward, m_CurrentLaunchForce);
 
-        shellRigidBody.velocity = m_CurrentLaunchForce * shell.transform.forward;
+        //Rigidbody shellRigidBody = shell.m_RigidBody;
+        //shellRigidBody.transform.position = m_FireTransform.position;
+        //shellRigidBody.transform.rotation = m_FireTransform.rotation;
+
+        //shellRigidBody.velocity = m_CurrentLaunchForce * shell.transform.forward;
 
         NotifyCreateShell(shell);
 

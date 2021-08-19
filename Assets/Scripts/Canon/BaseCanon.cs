@@ -11,6 +11,8 @@ public abstract class BaseCanon : MonoBehaviour
     [HideInInspector] public int m_PlayerNumber;
     [HideInInspector] public TankInfo m_Owner;
 
+    protected string m_FireButton;
+
     public BaseShellConfig m_ShellConfig;
 
     public System.Action<Shell> OnCreateShell;
@@ -22,6 +24,8 @@ public abstract class BaseCanon : MonoBehaviour
         layerName.Append(m_PlayerNumber.ToString());
         Debug.Log(layerName.ToString());
         m_Layer = LayerMask.NameToLayer(layerName.ToString());
+
+        m_FireButton = "Fire" + m_PlayerNumber;
     }
 
     public abstract void Activate();

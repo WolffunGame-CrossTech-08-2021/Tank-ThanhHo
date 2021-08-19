@@ -13,13 +13,13 @@ public class PoisonAreaTodoConfig : BaseShellTodoConfig
 
     public override BaseShellTodo GetShellTodo()
     {
-        PoisonAreaTodo todoinstance = base.GetShellTodo() as PoisonAreaTodo;
-        todoinstance.m_PoisonRadius = m_PoisonRadius;
-        todoinstance.m_PoisonAreaDuration = m_PoisonAreaDuration;
-        todoinstance.m_PoisonEffectDuration = m_PoisonEffectDuration;
-        todoinstance.m_Dps = m_Dps;
+        PoisonAreaTodo todoInstance = base.GetShellTodo() as PoisonAreaTodo;
+        todoInstance.m_PoisonRadius = m_PoisonRadius;
+        todoInstance.m_PoisonAreaDuration = m_PoisonAreaDuration;
+        todoInstance.m_PoisonEffectDuration = m_PoisonEffectDuration;
+        todoInstance.m_Dps = m_Dps;
 
-        return todoinstance;
+        return todoInstance;
     }
 
     protected override Type GetDesiredTodoType()

@@ -25,12 +25,14 @@ public class SplitingCanon : PressHoldingCanon
 
         Vector3 fireDirection = Quaternion.Euler(0, splitAngle, 0) * m_FireTransform.forward;
 
-        Rigidbody shellRigidBody = shell.m_RigidBody;
-        shell.transform.forward = fireDirection;
+        shell.SetUp(m_FireTransform.position, fireDirection, m_CurrentLaunchForce);
 
-        shell.transform.position = m_FireTransform.position;
+        //Rigidbody shellRigidBody = shell.m_RigidBody;
+        //shell.transform.forward = fireDirection;
 
-        shellRigidBody.velocity = m_CurrentLaunchForce * shellRigidBody.transform.forward;
+        //shell.transform.position = m_FireTransform.position;
+
+        //shellRigidBody.velocity = m_CurrentLaunchForce * shellRigidBody.transform.forward;
 
         NotifyCreateShell(shell);
     }

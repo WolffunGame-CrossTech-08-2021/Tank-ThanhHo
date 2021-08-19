@@ -13,6 +13,12 @@ public class Shell : MonoBehaviour
 
     protected float m_CurrentTimeToLive;
 
+    public virtual void SetUp(Vector3 position, Vector3 direction, float force)
+    {
+        transform.position = position;
+        m_RigidBody.velocity = direction.normalized * force;
+    }
+
     public virtual void SetLayer(int layerId)
     {
         Debug.Log(layerId);
@@ -20,6 +26,11 @@ public class Shell : MonoBehaviour
     }
 
     protected virtual void Start()
+    {
+        m_CurrentTimeToLive = m_MaxTimeToLive;
+    }
+
+    protected virtual void OnEnable()
     {
         m_CurrentTimeToLive = m_MaxTimeToLive;
     }

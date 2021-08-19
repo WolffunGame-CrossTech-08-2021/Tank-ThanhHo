@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class PressCanon : BaseCanon
 {
-
     private bool activated = false;
-    private string m_FireButton;
 
     public override void Activate()
     {
@@ -16,11 +14,6 @@ public class PressCanon : BaseCanon
     public override void Deactivate()
     {
         activated = false;
-    }
-
-    protected override void Start()
-    {
-        m_FireButton = "Fire" + m_PlayerNumber;
     }
 
     // Update is called once per frame
@@ -44,10 +37,10 @@ public class PressCanon : BaseCanon
 
         Shell shellInstance = InstantiateShell();
 
-        IDirectionalShell shellDirection = shellInstance as IDirectionalShell;
+        //IDirectionalShell shellDirection = shellInstance as IDirectionalShell;
 
-        shellInstance.transform.position = m_FireTransform.position;
-        shellDirection.SetDirection(m_FireTransform.forward);
+        shellInstance.SetUp(m_FireTransform.position, m_FireTransform.forward, 0);
+        //shellDirection.SetDirection(m_FireTransform.forward);
 
         NotifyCreateShell(shellInstance);
 
