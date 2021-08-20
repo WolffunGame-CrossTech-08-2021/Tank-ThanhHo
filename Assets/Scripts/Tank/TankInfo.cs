@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class TankInfo : MonoBehaviour
 {
-    public float m_Health;
     public float m_MovementSpeed;
     public float m_TurnSpeed;
     public float m_Damage;
@@ -54,7 +53,6 @@ public class TankInfo : MonoBehaviour
         else
         {
             existingEffect.ResetDuration();
-            effect.Destroy();
 
             if (effect is IStackable)
             {
@@ -62,6 +60,8 @@ public class TankInfo : MonoBehaviour
 
                 stackInfo.IncreaseStack(1);
             }
+
+            effect.Destroy();
             return;
         }
 

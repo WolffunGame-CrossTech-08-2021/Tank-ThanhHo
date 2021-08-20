@@ -24,6 +24,12 @@ public class RapidCanon : PressHoldingCanon
         m_CanonState = RapidState.BaseState;
     }
 
+    public override void Deactivate()
+    {
+        base.Deactivate();
+        m_CanonState = RapidState.BaseState;
+    }
+
     protected override void Start()
     {
         base.Start();

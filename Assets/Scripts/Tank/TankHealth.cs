@@ -9,11 +9,11 @@ public class TankHealth : MonoBehaviour
     public Color m_FullHealthColor = Color.green;  
     public Color m_ZeroHealthColor = Color.red;    
     public GameObject m_ExplosionPrefab;
-    [SerializeField] TankInfo m_TankInfo;
+    //[SerializeField] TankInfo m_TankInfo;
     
     private AudioSource m_ExplosionAudio;          
     private ParticleSystem m_ExplosionParticles;   
-    //private float m_CurrentHealth;  
+    private float m_CurrentHealth;  
     private bool m_Dead;            
 
 
@@ -28,7 +28,7 @@ public class TankHealth : MonoBehaviour
 
     private void OnEnable()
     {
-        m_TankInfo.m_Health = m_StartingHealth;
+        m_CurrentHealth = m_StartingHealth;
         m_Dead = false;
 
         SetHealthUI();
@@ -38,13 +38,13 @@ public class TankHealth : MonoBehaviour
     public void TakeDamage(float amount)
     {
         // Adjust the tank's current health, update the UI based on the new health and check whether or not the tank is dead.
-        m_TankInfo.m_Health -= amount;
+        m_CurrentHealth -= amount;
 
-        m_TankInfo.m_Health = Mathf.Max(0, m_TankInfo.m_Health);
+        m_CurrentHealth = Mathf.Max(0, m_CurrentHealth);
         
         SetHealthUI();
 
-        if(m_TankInfo.m_Health <= 0 && !m_Dead)
+        if(m_CurrentHealth <= 0 && !m_Dead)
         {
             m_Dead = true;
             OnDeath();
@@ -55,9 +55,9 @@ public class TankHealth : MonoBehaviour
     private void SetHealthUI()
     {
         // Adjust the value and colour of the slider.
-        m_Slider.value = m_TankInfo.m_Health;
+        m_Slider.value = m_CurrentHealth;
 
-        m_FillImage.color = Color.Lerp(m_ZeroHealthColor, m_FullHealthColor, m_TankInfo.m_Health / m_StartingHealth);
+        m_FillImage.color = Color.Lerp(m_ZeroHealthColor, m_FullHealthColor, m_CurrentHealth / m_StartingHealth);
     }
 
 
