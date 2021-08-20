@@ -10,4 +10,10 @@ public static class Utilities
 
 		return true;
 	}
+
+	public static Vector3 RotateAroundPivot(this Vector3 point, Vector3 pivot, Vector3 axis, float angle)
+    {
+		Quaternion rotation = Quaternion.AngleAxis(angle, axis);
+		return rotation * (point - pivot) + pivot;
+    }
 }

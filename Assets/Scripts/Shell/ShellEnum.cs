@@ -9,4 +9,5 @@ public enum ShellEnum
     Base,
     Homing,
     Snowflake,
+    Twisted,
 }
