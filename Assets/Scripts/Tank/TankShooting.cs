@@ -59,4 +59,20 @@ public class TankShooting : MonoBehaviour
             ChooseCanon(m_CurrentCanonIndex);
         }
     }
+
+    public void Activate()
+    {
+        if(m_CurrentCanon != null)
+        {
+            m_CurrentCanon.Activate();
+        }
+    }
+
+    public void Deactivate()
+    {
+        if (m_CurrentCanon != null)
+        {
+            m_CurrentCanon.Deactivate();
+        }
+    }
 }

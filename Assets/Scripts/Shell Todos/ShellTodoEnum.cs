@@ -8,5 +8,6 @@ public enum ShellTodoEnum
 {
     Explosion,
     PoisonArea,
-    Split
+    Split,
+    ExplodeStun,
 }

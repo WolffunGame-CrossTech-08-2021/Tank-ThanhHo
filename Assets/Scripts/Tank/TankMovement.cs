@@ -105,4 +105,14 @@ public class TankMovement : MonoBehaviour
 
         m_Rigidbody.MoveRotation(m_Rigidbody.rotation * turnRotate);
     }
+
+    public void Activate()
+    {
+        enabled = true;
+    }
+
+    public void Deactivate()
+    {
+        enabled = false;
+    }
 }

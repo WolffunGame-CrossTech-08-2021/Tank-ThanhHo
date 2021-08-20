@@ -9,4 +9,5 @@ public enum EffectEnum
     Poison,
     Targeted,
     InstantDamage,
+    Stun
 }

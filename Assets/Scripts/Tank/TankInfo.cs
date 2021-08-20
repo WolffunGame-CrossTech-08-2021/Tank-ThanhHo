@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class TankInfo : MonoBehaviour
 {
-    public float m_MovementSpeed;
-    public float m_TurnSpeed;
-    public float m_Damage;
     public TankHealth m_TankHealth;
+    public TankMovement m_TankMovement;
+    public TankShooting m_TankShooting;
 
     [SerializeField] List<Effect> m_effects;
+
+    private float m_CurrentStunDuration;
 
     private void OnEnable()
     {
@@ -22,7 +23,26 @@ public class TankInfo : MonoBehaviour
         {
             m_effects.Clear();
         }
-        
+    }
+
+    private void Update()
+    {
+        UpdateStunDuration();
+    }
+
+    private void UpdateStunDuration()
+    {
+        if (m_CurrentStunDuration <= 0) return;
+
+        m_CurrentStunDuration -= Time.deltaTime;
+
+        if(m_CurrentStunDuration <= 0)
+        {
+            m_CurrentStunDuration = 0;
+
+            m_TankShooting.Activate();
+            m_TankMovement.Activate();
+        }
     }
 
     public ReadOnlyCollection<Effect> effects
@@ -64,8 +84,6 @@ public class TankInfo : MonoBehaviour
             effect.Destroy();
             return;
         }
-
-        
     }
 
     private void ApplyEffect(Effect effect)
@@ -83,5 +101,25 @@ public class TankInfo : MonoBehaviour
     public Effect GetEffect(EffectEnum effectType)
     {
         return m_effects.Find(x => x.GetEffectType() == effectType);
+    }
+
+    public void ApplyStun(float stunDuration)
+    {
+        if (stunDuration <= 0) return;
+
+        if(m_CurrentStunDuration < stunDuration)
+        {
+            if(m_CurrentStunDuration <= 0)
+            {
+                m_TankShooting.Deactivate();
+                m_TankMovement.Deactivate();
+            }
+
+            m_CurrentStunDuration = stunDuration;
+        }
+        else
+        {
+            return;
+        }
     }
 }
