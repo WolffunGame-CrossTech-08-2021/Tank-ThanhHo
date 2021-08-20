@@ -94,6 +94,7 @@ public class Shell : MonoBehaviour
     {
         if (m_TimeOutTodos == null)
             m_TimeOutTodos = new List<BaseShellTodo>();
+        todo.transform.parent = transform;
         m_TimeOutTodos.Add(todo);
     }
 
@@ -101,6 +102,7 @@ public class Shell : MonoBehaviour
     {
         if (m_ExplodeTodos == null)
             m_ExplodeTodos = new List<BaseShellTodo>();
+        todo.transform.parent = transform;
         m_ExplodeTodos.Add(todo);
     }
 

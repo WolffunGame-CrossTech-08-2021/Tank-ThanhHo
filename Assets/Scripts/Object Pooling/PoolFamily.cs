@@ -76,7 +76,7 @@ public abstract class PoolFamily<T,U>: MonoBehaviour
         {
             var instance = Instantiate(poolConfig.m_Prefab);
 
-            pool.Add(instance);
+            ReturnObjectToPool(type, instance);
         }
 
         Debug.Log("Handled not enought object in pool");
