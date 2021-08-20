@@ -70,4 +70,9 @@ public class ShellTwisted : Shell
 
         return newPosition;
     }
+
+    public override ShellEnum GetShellType()
+    {
+        return ShellEnum.Twisted;
+    }
 }
