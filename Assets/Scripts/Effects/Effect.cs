@@ -53,7 +53,7 @@ public abstract class Effect : MonoBehaviour
         {
             if(m_Target != null)
             {
-                m_Target.RemoveEffect(this);
+                m_Target.m_TankEffectManager.RemoveEffect(this);
             }
 
             Destroy();
@@ -64,7 +64,7 @@ public abstract class Effect : MonoBehaviour
     {
         if(m_Target != null)
         {
-            m_Target.RemoveEffect(this);
+            m_Target.m_TankEffectManager.RemoveEffect(this);
         }
         m_Target = null;
 

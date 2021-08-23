@@ -22,9 +22,9 @@ public class ExplodeStunTodo : BaseShellTodo
 			{
 				StunEffect effectInstance = EffectPoolFamily.m_Instance.GetObject(EffectEnum.Stun) as StunEffect;
 
-				effectInstance.m_StunDuration = m_StunDuration;
+				effectInstance.m_MaxDuration = m_StunDuration;
 
-				targetInfo.AddEffect(effectInstance);
+				targetInfo.m_TankEffectManager.AddEffect(effectInstance);
 			}
 		}
 

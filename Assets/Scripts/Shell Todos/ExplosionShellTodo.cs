@@ -38,7 +38,7 @@ public class ExplosionShellTodo : BaseShellTodo
 
 				effectDamageInstance.damage = damage;
 
-				targetInfo.AddEffect(effectDamageInstance);
+				targetInfo.m_TankEffectManager.AddEffect(effectDamageInstance);
 			}
 		}
 

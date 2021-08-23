@@ -61,7 +61,7 @@ public class ShellHoming : Shell, IDirectionalShell
 			m_CurrentTargetedEffect.m_MaxDuration = float.PositiveInfinity;
 
 
-			targetInfo.AddEffect(m_CurrentTargetedEffect);
+			targetInfo.m_TankEffectManager.AddEffect(m_CurrentTargetedEffect);
 			
 			m_TargetDetector.enabled = false;
 		}

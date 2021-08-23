@@ -64,7 +64,7 @@ public class PoisonArea : MonoBehaviour
         poisonEffectInstance.m_MaxDuration = m_PoisonEffectDuration;
 
 
-        tankInfo.AddEffect(poisonEffectInstance);
+        tankInfo.m_TankEffectManager.AddEffect(poisonEffectInstance);
     }
 
     private void OnTriggerExit(Collider other)
