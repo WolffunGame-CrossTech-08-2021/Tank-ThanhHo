@@ -6,6 +6,14 @@ public class InstantDamageEffect : Effect, IPassThroughable
 {
     public float damage;
 
+    public override Effect Clone()
+    {
+        InstantDamageEffect instance = base.Clone() as InstantDamageEffect;
+        instance.damage = damage;
+
+        return instance;
+    }
+
     public override EffectEnum GetEffectType()
     {
         return EffectEnum.InstantDamage;

@@ -8,5 +8,4 @@ public class StunEffect : Effect, IBlockMovement, IBlockShooting
     {
         return EffectEnum.Stun;
     }
-
 }

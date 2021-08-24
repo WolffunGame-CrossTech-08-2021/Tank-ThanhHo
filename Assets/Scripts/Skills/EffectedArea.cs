@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoisonArea : MonoBehaviour
+public class EffectedArea : MonoBehaviour
 {
     [SerializeField] float m_PoisonRadius;
-    [SerializeField] float m_PoisonEffectDuration;
     [SerializeField] float m_AreaDuration;
-    [SerializeField] float m_Dps;
+    [SerializeField] Effect m_EffectPrototype;
 
     //public PoisonEffect m_PoisonEffectPrefab;
 
@@ -15,16 +14,17 @@ public class PoisonArea : MonoBehaviour
 
     TankInfo m_Owner;
 
-    public void SetUp(TankInfo owner,float poisonRadius, float areaDuration, float poisonEffectDuration, float dps)
+    public void SetUp(TankInfo owner,float radius, float duration, Effect effectPrototype)
     {
         m_Owner = owner;
 
-        m_PoisonRadius = poisonRadius;
-        m_PoisonEffectDuration = poisonEffectDuration;
-        m_AreaDuration = areaDuration;
-        m_Dps = dps;
+        m_PoisonRadius = radius;
+        m_AreaDuration = duration;
 
-        transform.localScale = new Vector3(poisonRadius, poisonRadius, poisonRadius);
+        m_EffectPrototype = effectPrototype;
+        m_EffectPrototype.transform.parent = transform;
+
+        transform.localScale = new Vector3(m_PoisonRadius, m_PoisonRadius, m_PoisonRadius);
         m_TanksInArea = new List<TankInfo>();
     }
 
@@ -59,10 +59,7 @@ public class PoisonArea : MonoBehaviour
 
     private void AddEffect(TankInfo tankInfo)
     {
-        PoisonEffect poisonEffectInstance = EffectPoolFamily.m_Instance.GetObject(EffectEnum.Poison) as PoisonEffect;
-        poisonEffectInstance.m_Dps = m_Dps;
-        poisonEffectInstance.m_MaxDuration = m_PoisonEffectDuration;
-
+        Effect poisonEffectInstance = m_EffectPrototype.Clone();
 
         tankInfo.m_TankEffectManager.AddEffect(poisonEffectInstance);
     }

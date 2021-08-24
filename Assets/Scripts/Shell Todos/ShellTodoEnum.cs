@@ -10,4 +10,5 @@ public enum ShellTodoEnum
     PoisonArea,
     Split,
     ExplodeStun,
+    SlowArea,
 }

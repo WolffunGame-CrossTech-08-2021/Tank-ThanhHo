@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class PoisonAreaTodo : BaseShellTodo
 {
-    [SerializeField] PoisonArea m_PoisonAreaPrefab;
+    [SerializeField] EffectedArea m_PoisonAreaPrefab;
     [SerializeField] ParticleSystem m_ExplossionParticlePrefab;
     public float m_PoisonRadius;
     public float m_PoisonAreaDuration;
@@ -25,8 +25,14 @@ public class PoisonAreaTodo : BaseShellTodo
 
         Vector3 poisonAreaPosition = shellPosition;
         poisonAreaPosition.y = 0;
-        PoisonArea poisonAreaInstance = Instantiate(m_PoisonAreaPrefab, poisonAreaPosition, Quaternion.identity);
-        poisonAreaInstance.SetUp(shell.m_Owner, poisonRadius, poisonAreaDuration, poisonEffectDuration, dps);
+
+        PoisonEffect poisonEffectInstance = EffectPoolFamily.m_Instance.GetObject(EffectEnum.Poison) as PoisonEffect;
+
+        poisonEffectInstance.m_MaxDuration = m_PoisonEffectDuration;
+        poisonEffectInstance.m_Dps = m_Dps;
+
+        EffectedArea poisonAreaInstance = Instantiate(m_PoisonAreaPrefab, poisonAreaPosition, Quaternion.identity);
+        poisonAreaInstance.SetUp(shell.m_Owner, poisonRadius, poisonAreaDuration, poisonEffectInstance);
     }
 
     public override void Execute(Shell shell)

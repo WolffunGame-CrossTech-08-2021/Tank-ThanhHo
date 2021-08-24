@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StickyEffect : MonoBehaviour
+public class StickyEffect : Effect
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public float m_FlatSlowValue;
+    public float m_PercentSlowValue;
 
-    // Update is called once per frame
-    void Update()
+    public override EffectEnum GetEffectType()
     {
-        
+        return EffectEnum.Sticky;
     }
 }

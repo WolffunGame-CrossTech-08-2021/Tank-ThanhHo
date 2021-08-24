@@ -34,6 +34,17 @@ public abstract class Effect : MonoBehaviour
     }
 
     public abstract EffectEnum GetEffectType();
+    public virtual Effect Clone()
+    {
+        Effect instance = EffectPoolFamily.m_Instance.GetObject(GetEffectType());
+
+        instance.m_MaxDuration = m_MaxDuration;
+        instance.m_Owner = null;
+        instance.m_Target = null;
+        instance.ResetDuration();
+
+        return instance;
+    }
 
     protected virtual void Update()
     {

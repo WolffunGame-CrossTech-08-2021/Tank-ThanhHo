@@ -24,6 +24,14 @@ public class PoisonEffect : Effect
         }
     }
 
+    public override Effect Clone()
+    {
+        PoisonEffect instance =  base.Clone() as PoisonEffect;
+        instance.m_Dps = m_Dps;
+
+        return instance;
+    }
+
     protected override void Update()
     {
         DealDamage();
