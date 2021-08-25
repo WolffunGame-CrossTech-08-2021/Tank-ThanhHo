@@ -23,8 +23,6 @@ public abstract class Effect : MonoBehaviour
     {
         m_Target = null;
         m_Owner = null;
-        m_MaxDuration = 0;
-        m_CurrentDuration = 0;
     }
 
     public virtual void StartEffect()

@@ -152,4 +152,17 @@ public class ShellHoming : Shell, IDirectionalShell
     {
 		return ShellEnum.Homing;
     }
+
+    public override Shell Clone()
+    {
+        ShellHoming shellInstance = base.Clone() as ShellHoming;
+
+        shellInstance.m_TargetTankMask = m_TargetTankMask;
+        shellInstance.m_MovingSpeed = m_MovingSpeed;
+        shellInstance.m_TurnSpeed = m_TurnSpeed;
+        shellInstance.m_ActiveRadius = m_ActiveRadius;
+        shellInstance.m_CurrentDirection = m_CurrentDirection;
+
+        return shellInstance;
+    }
 }

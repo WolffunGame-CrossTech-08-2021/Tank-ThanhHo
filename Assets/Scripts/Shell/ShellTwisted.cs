@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ShellTwisted : Shell
 {
-    [HideInInspector] public float m_Speed;
-    [HideInInspector] public float m_TwistedRadius;
-    [HideInInspector] public float m_RotateSpeed;
+    public float m_Speed;
+    public float m_TwistedRadius;
+    public float m_RotateSpeed;
 
     private Vector3 m_Center;
     private Vector3 m_Direction;
@@ -74,5 +74,19 @@ public class ShellTwisted : Shell
     public override ShellEnum GetShellType()
     {
         return ShellEnum.Twisted;
+    }
+
+    public override Shell Clone()
+    {
+        ShellTwisted shellInstance = base.Clone() as ShellTwisted;
+
+        shellInstance.m_Speed = m_Speed;
+        shellInstance.m_TwistedRadius = m_TwistedRadius;
+        shellInstance.m_RotateSpeed = m_RotateSpeed;
+
+        shellInstance.m_Center = m_Center;
+        shellInstance.m_Direction = m_Direction;
+
+        return shellInstance;
     }
 }

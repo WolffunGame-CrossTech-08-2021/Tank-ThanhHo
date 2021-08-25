@@ -27,6 +27,8 @@ public class SlowAreaTodo : BaseShellTodo
         StickyEffect stickyEffectInstance = EffectPoolFamily.m_Instance.GetObject(EffectEnum.Sticky) as StickyEffect;
 
         stickyEffectInstance.m_MaxDuration = m_EffectDuration;
+        stickyEffectInstance.m_FlatSlowValue = m_SlowValue;
+        stickyEffectInstance.m_Owner = shell.m_Owner;
 
         EffectedArea poisonAreaInstance = Instantiate(m_EffectedAreaPrefab, poisonAreaPosition, Quaternion.identity);
         poisonAreaInstance.SetUp(shell.m_Owner, m_AreaRadius, m_AreaDuration, stickyEffectInstance);
@@ -39,6 +41,20 @@ public class SlowAreaTodo : BaseShellTodo
 
     public override ShellTodoEnum GetShellTodoType()
     {
-        return ShellTodoEnum.PoisonArea;
+        return ShellTodoEnum.SlowArea;
+    }
+
+    public override BaseShellTodo Clone()
+    {
+        SlowAreaTodo todoInstance = ShellTodoPoolFamily.m_Instance.GetObject(GetShellTodoType()) as SlowAreaTodo;
+        todoInstance.m_EffectedAreaPrefab = m_EffectedAreaPrefab;
+        todoInstance.m_ExplossionParticlePrefab = m_ExplossionParticlePrefab;
+
+        todoInstance.m_AreaRadius = m_AreaRadius;
+        todoInstance.m_AreaDuration = m_AreaDuration;
+        todoInstance.m_EffectDuration = m_EffectDuration;
+        todoInstance.m_SlowValue = m_SlowValue;
+
+        return todoInstance;
     }
 }

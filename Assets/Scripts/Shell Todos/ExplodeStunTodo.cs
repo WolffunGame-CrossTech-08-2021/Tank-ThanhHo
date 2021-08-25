@@ -39,4 +39,15 @@ public class ExplodeStunTodo : BaseShellTodo
     {
         return ShellTodoEnum.ExplodeStun;
     }
+
+    public override BaseShellTodo Clone()
+    {
+        ExplodeStunTodo todoInstance = ShellTodoPoolFamily.m_Instance.GetObject(GetShellTodoType()) as ExplodeStunTodo;
+        todoInstance.m_TankMask = m_TankMask;
+        todoInstance.m_ExplodePrefab = m_ExplodePrefab;
+        todoInstance.m_ExplosionRadius = m_ExplosionRadius;
+        todoInstance.m_StunDuration = m_StunDuration;
+
+        return todoInstance;
+    }
 }

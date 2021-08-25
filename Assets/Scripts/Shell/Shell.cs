@@ -134,4 +134,34 @@ public class Shell : MonoBehaviour
     {
         return ShellEnum.Base;
     }
+
+    public virtual Shell Clone()
+    {
+        Shell shellInstance = ShellPoolFamily.m_Instance.GetObject(GetShellType());
+
+        Transform shellInstanceTransform = shellInstance.transform;
+        Transform currentTransform = transform;
+
+        shellInstanceTransform.position = currentTransform.position;
+        shellInstanceTransform.rotation = currentTransform.rotation;
+        shellInstanceTransform.localScale = currentTransform.localScale;
+
+        shellInstance.m_Owner = m_Owner;
+        shellInstance.m_MaxTimeToLive = m_MaxTimeToLive;
+        //shellInstance.m_CurrentTimeToLive = m_CurrentTimeToLive;
+
+        shellInstance.ClearTimeOutTodos();
+        foreach (var todo in m_TimeOutTodos)
+        {
+            shellInstance.AddTimeOutTodo(todo.Clone());
+        }
+
+        shellInstance.ClearExplodeTodo();
+        foreach(var todo in m_ExplodeTodos)
+        {
+            shellInstance.AddExplodeTodo(todo.Clone());
+        }
+
+        return shellInstance;
+    }
 }

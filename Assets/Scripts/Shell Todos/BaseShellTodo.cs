@@ -10,4 +10,6 @@ public abstract class BaseShellTodo : MonoBehaviour
     }
 
     public abstract ShellTodoEnum GetShellTodoType();
+
+    public abstract BaseShellTodo Clone();
 }

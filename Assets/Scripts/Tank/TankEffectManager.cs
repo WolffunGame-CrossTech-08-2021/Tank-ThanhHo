@@ -64,6 +64,11 @@ public class TankEffectManager : MonoBehaviour
             BlockShooting();
         }
 
+        if(effect is IMovementModifier)
+        {
+            m_TankInfo.m_TankMovement.AddMovementModifier(effect as IMovementModifier);
+        }
+
         m_Effects.Add(effect);
         effect.m_Target = m_TankInfo;
         effect.StartEffect();
@@ -89,6 +94,11 @@ public class TankEffectManager : MonoBehaviour
             {
                 UnblockShooting();
             }
+        }
+
+        if (effect is IMovementModifier)
+        {
+            m_TankInfo.m_TankMovement.RemoveMovementModifier(effect as IMovementModifier);
         }
 
         return true;

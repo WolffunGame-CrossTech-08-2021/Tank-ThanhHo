@@ -124,4 +124,18 @@ public class ShellSnowflake : Shell
 	{
 		return ShellEnum.Snowflake;
 	}
+
+    public override Shell Clone()
+    {
+        ShellSnowflake shellInstance = base.Clone() as ShellSnowflake;
+
+        shellInstance.m_TargetTankMask = m_TargetTankMask;
+        shellInstance.m_MovingSpeed = m_MovingSpeed;
+        shellInstance.m_ActiveRadius = m_ActiveRadius;
+        shellInstance.m_BigExplosionRadius = m_BigExplosionRadius;
+        shellInstance.m_BigExplosionMaxDamage = m_BigExplosionMaxDamage;
+        shellInstance.m_CurrentDirection = m_CurrentDirection;
+
+        return shellInstance;
+    }
 }

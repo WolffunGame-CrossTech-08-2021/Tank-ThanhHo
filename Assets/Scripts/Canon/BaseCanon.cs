@@ -13,7 +13,9 @@ public abstract class BaseCanon : MonoBehaviour
 
     protected string m_FireButton;
 
-    public BaseShellConfig m_ShellConfig;
+    //public BaseShellConfig m_ShellConfig;
+
+    public Shell m_ShellPrefab;
 
     public System.Action<Shell> OnCreateShell;
     protected int m_Layer;
@@ -56,7 +58,9 @@ public abstract class BaseCanon : MonoBehaviour
 
     protected virtual Shell InstantiateShell()
     {
-        Shell shellInstance = m_ShellConfig.GetShell();
+        //Shell shellInstance = m_ShellConfig.GetShell();
+
+        Shell shellInstance = m_ShellPrefab.Clone();
 
         shellInstance.m_Owner = m_Owner;
         shellInstance.gameObject.SetActive(true);

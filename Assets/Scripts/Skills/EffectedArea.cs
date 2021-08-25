@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EffectedArea : MonoBehaviour
 {
-    [SerializeField] float m_PoisonRadius;
+    [SerializeField] float m_AreaRadius;
     [SerializeField] float m_AreaDuration;
     [SerializeField] Effect m_EffectPrototype;
 
@@ -18,13 +18,13 @@ public class EffectedArea : MonoBehaviour
     {
         m_Owner = owner;
 
-        m_PoisonRadius = radius;
+        m_AreaRadius = radius;
         m_AreaDuration = duration;
 
         m_EffectPrototype = effectPrototype;
         m_EffectPrototype.transform.parent = transform;
 
-        transform.localScale = new Vector3(m_PoisonRadius, m_PoisonRadius, m_PoisonRadius);
+        transform.localScale = new Vector3(m_AreaRadius, m_AreaRadius, m_AreaRadius);
         m_TanksInArea = new List<TankInfo>();
     }
 
@@ -59,9 +59,11 @@ public class EffectedArea : MonoBehaviour
 
     private void AddEffect(TankInfo tankInfo)
     {
-        Effect poisonEffectInstance = m_EffectPrototype.Clone();
+        Effect effectInstance = m_EffectPrototype.Clone();
+        effectInstance.ResetDuration();
+        effectInstance.enabled = true;
 
-        tankInfo.m_TankEffectManager.AddEffect(poisonEffectInstance);
+        tankInfo.m_TankEffectManager.AddEffect(effectInstance);
     }
 
     private void OnTriggerExit(Collider other)

@@ -44,4 +44,18 @@ public class PoisonAreaTodo : BaseShellTodo
     {
         return ShellTodoEnum.PoisonArea;
     }
+
+    public override BaseShellTodo Clone()
+    {
+        PoisonAreaTodo todoInstance = ShellTodoPoolFamily.m_Instance.GetObject(GetShellTodoType()) as PoisonAreaTodo;
+
+        todoInstance.m_PoisonAreaPrefab = m_PoisonAreaPrefab;
+        todoInstance.m_ExplossionParticlePrefab = m_ExplossionParticlePrefab;
+        todoInstance.m_PoisonRadius = m_PoisonRadius;
+        todoInstance.m_PoisonAreaDuration = m_PoisonAreaDuration;
+        todoInstance.m_PoisonEffectDuration = m_PoisonEffectDuration;
+        todoInstance.m_Dps = m_Dps;
+
+        return todoInstance;
+    }
 }

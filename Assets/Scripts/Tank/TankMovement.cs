@@ -1,15 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class TankMovement : MonoBehaviour
 {
     public int m_PlayerNumber = 1;
-    public float m_Speed = 12f;
+    public float m_BaseSpeed = 12f;
     public float m_TurnSpeed = 180f;
     public AudioSource m_MovementAudio;
     public AudioClip m_EngineIdling;
     public AudioClip m_EngineDriving;
     public float m_PitchRange = 0.2f;
 
+    [SerializeField] private float m_CurrentSpeed;
     
     private string m_MovementAxisName;
     private string m_TurnAxisName;
@@ -18,26 +20,27 @@ public class TankMovement : MonoBehaviour
     private float m_TurnInputValue;
     private float m_OriginalPitch;
 
+    private List<IMovementModifier> m_MovementModifiers = new List<IMovementModifier>();
+
 
     private void Awake()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
     }
 
-
     private void OnEnable ()
     {
         m_Rigidbody.isKinematic = false;
         m_MovementInputValue = 0f;
         m_TurnInputValue = 0f;
+        RecalculateSpeed();
     }
-
 
     private void OnDisable ()
     {
         m_Rigidbody.isKinematic = true;
+        m_MovementModifiers.Clear();
     }
-
 
     private void Start()
     {
@@ -46,7 +49,6 @@ public class TankMovement : MonoBehaviour
 
         m_OriginalPitch = m_MovementAudio.pitch;
     }
-    
 
     private void Update()
     {
@@ -56,7 +58,6 @@ public class TankMovement : MonoBehaviour
 
         EngineAudio();
     }
-
 
     private void EngineAudio()
     {
@@ -91,7 +92,7 @@ public class TankMovement : MonoBehaviour
     private void Move()
     {
         // Adjust the position of the tank based on the player's input.
-        Vector3 movement = transform.forward * m_MovementInputValue * m_Speed * Time.deltaTime;
+        Vector3 movement = transform.forward * m_MovementInputValue * m_CurrentSpeed * Time.deltaTime;
         m_Rigidbody.MovePosition(m_Rigidbody.position + movement);
     }
 
@@ -115,4 +116,36 @@ public class TankMovement : MonoBehaviour
     {
         enabled = false;
     }
+
+    public void AddMovementModifier(IMovementModifier movementModifier)
+    {
+        m_MovementModifiers.Add(movementModifier);
+        RecalculateSpeed();
+    }
+
+    public void RemoveMovementModifier(IMovementModifier movementModifier)
+    {
+        m_MovementModifiers.Remove(movementModifier);
+        RecalculateSpeed();
+    }
+
+    private void RecalculateSpeed()
+    {
+        MovementModify movementModify = new MovementModify();
+        movementModify.m_FlatMovementChange = 0;
+        movementModify.m_PercentMovementChange = 1;
+
+        for (int i = 0; i < m_MovementModifiers.Count; i++)
+        {
+            movementModify = m_MovementModifiers[i].ModifyMovement(movementModify);
+        }
+
+        m_CurrentSpeed = (m_BaseSpeed + movementModify.m_FlatMovementChange) * movementModify.m_PercentMovementChange;
+    }
+}
+
+public struct MovementModify
+{
+    public float m_FlatMovementChange;
+    public float m_PercentMovementChange;
 }

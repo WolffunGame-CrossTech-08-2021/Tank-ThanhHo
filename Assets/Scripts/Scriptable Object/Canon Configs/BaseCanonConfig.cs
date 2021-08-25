@@ -5,7 +5,8 @@ using UnityEngine;
 public class BaseCanonConfig : ScriptableObject
 {
     public BaseCanon m_CanonPrefab;
-    public BaseShellConfig m_ShellConfig;
+    //public BaseShellConfig m_ShellConfig;
+    public Shell m_ShellPrefab;
 
     private void OnValidate()
     {
@@ -25,9 +26,7 @@ public class BaseCanonConfig : ScriptableObject
     public virtual BaseCanon GetCanon()
     {
         BaseCanon canonInstance = Instantiate(m_CanonPrefab);
-        canonInstance.m_ShellConfig = m_ShellConfig;
-
-        
+        canonInstance.m_ShellPrefab = m_ShellPrefab;
 
         return canonInstance;
     }
