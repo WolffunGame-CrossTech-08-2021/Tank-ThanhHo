@@ -40,7 +40,7 @@ public class ShellTwisted : Shell
 
     void UpdateMovement()
     {
-        Vector3 currentPosition = transform.position;
+        Vector3 currentPosition = m_RigidBody.position;
         float deltaTime = Time.deltaTime;
 
         Vector3 newPosition = MoveFoward(currentPosition, m_Direction, m_Speed, deltaTime);
