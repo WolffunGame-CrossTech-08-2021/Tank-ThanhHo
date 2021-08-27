@@ -22,7 +22,7 @@ public class ShellHoming : Shell, IDirectionalShell
         base.OnEnable();
 		m_TargetDetector.enabled = true;
 		m_HitboxDetector.enabled = true;
-
+        m_RigidBody.isKinematic = false;
 	}
 
     public override void SetLayer(int layerId)
@@ -88,8 +88,6 @@ public class ShellHoming : Shell, IDirectionalShell
 	{
 		base.Start();
 
-		m_RigidBody.isKinematic = true;
-
 		m_TargetDetector.SetRadius(m_ActiveRadius);
 
 		m_TargetDetector.OnObjectEnter += OnObjectEnter;
@@ -112,6 +110,7 @@ public class ShellHoming : Shell, IDirectionalShell
 	private void MoveFoward()
 	{
 		Vector3 movement = m_CurrentDirection * m_MovingSpeed * Time.deltaTime;
+        Debug.Log(movement);
 		Vector3 newPosition = m_RigidBody.position + movement;
 		m_RigidBody.MovePosition(newPosition);
 	}

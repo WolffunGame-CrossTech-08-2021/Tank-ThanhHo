@@ -11,6 +11,11 @@ public class ShellTwisted : Shell
     private Vector3 m_Center;
     private Vector3 m_Direction;
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        m_RigidBody.isKinematic = false;
+    }
     public override void SetUp(Vector3 position, Vector3 direction, float force)
     {
         direction.y = 0;

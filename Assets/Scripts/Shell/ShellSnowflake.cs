@@ -20,8 +20,8 @@ public class ShellSnowflake : Shell
 		base.OnEnable();
 		m_TargetDetector.enabled = true;
 		m_HitboxDetector.enabled = true;
-
-	}
+        m_RigidBody.isKinematic = false;
+    }
 
 	public override void SetLayer(int layerId)
 	{
@@ -90,8 +90,6 @@ public class ShellSnowflake : Shell
 	protected override void Start()
 	{
 		base.Start();
-
-		m_RigidBody.isKinematic = true;
 
 		m_TargetDetector.SetRadius(m_ActiveRadius);
 

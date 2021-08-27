@@ -35,7 +35,7 @@ public class TankShooting : MonoBehaviour
 
         if (m_CurrentCanon != null)
         {
-            Destroy(m_CurrentCanon);
+            Destroy(m_CurrentCanon.gameObject);
         }
 
         m_CurrentCanon = m_BaseCanonConfigs[index].GetCanon();
