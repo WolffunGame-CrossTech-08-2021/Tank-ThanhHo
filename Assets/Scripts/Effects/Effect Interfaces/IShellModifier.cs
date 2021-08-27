@@ -4,12 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public enum EffectEnum
+public interface IShellModifier
 {
-    Poison,
-    Targeted,
-    InstantDamage,
-    Stun,
-    Sticky,
-    BulletBuff
+    void Modify(Shell shell);
 }
