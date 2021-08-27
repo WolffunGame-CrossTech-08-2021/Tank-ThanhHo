@@ -5,6 +5,7 @@ public class TankShooting : MonoBehaviour
 {
     public int m_PlayerNumber = 1;
     [SerializeField] List<BaseCanonConfig> m_BaseCanonConfigs;
+    [SerializeField] private BaseShellTodo defaultShellExpodeTodoPrefab;
     public Transform m_FireTransform;
     public TankInfo m_TankInfo;
 
@@ -13,8 +14,8 @@ public class TankShooting : MonoBehaviour
     private BaseCanon m_CurrentCanon;
     private int m_CurrentCanonIndex;
 
-    public List<BaseShellTodo> m_TimeOutTodos;
-    public List<BaseShellTodo> m_ExplodeTodos;
+
+    public List<IShellModifier> m_ShellModifiers = new List<IShellModifier>();
 
     private void OnEnable()
     {
@@ -85,14 +86,27 @@ public class TankShooting : MonoBehaviour
 
     private void OnCanonCreateShell(Shell shell)
     {
-        foreach(var todo in m_TimeOutTodos)
+        shell.AddExplodeTodo(defaultShellExpodeTodoPrefab.Clone());
+
+        for (int i = 0; i < m_ShellModifiers.Count; i++)
         {
-            shell.AddTimeOutTodo(todo.Clone());
+            m_ShellModifiers[i].Modify(shell);
+        }
+    }
+
+    public bool AddShellModifier(IShellModifier shellModifier)
+    {
+        if(m_ShellModifiers.Contains(shellModifier))
+        {
+            return false;
         }
 
-        foreach(var todo in m_ExplodeTodos)
-        {
-            shell.AddExplodeTodo(todo.Clone());
-        }
+        m_ShellModifiers.Add(shellModifier);
+        return true;
+    }
+
+    public bool RemoveShellModifier(IShellModifier shellModifier)
+    {
+        return m_ShellModifiers.Remove(shellModifier);
     }
 }
