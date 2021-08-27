@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShellBuffEffect : Effect, IShellModifier
 {
-    BaseShellTodo shellTodoPrefab;
+    public BaseShellTodo shellTodoPrefab;
 
     public override EffectEnum GetEffectType()
     {
