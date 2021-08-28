@@ -15,11 +15,14 @@ public class ShellBuffItemConfig : BaseItemConfig
         ShellBuffEffect effectPrototype = EffectPoolFamily.m_Instance.GetObject(EffectEnum.BulletBuff) as ShellBuffEffect;
         effectPrototype.m_MaxDuration = m_BuffDuration;
         effectPrototype.enabled = false;
-        effectPrototype.shellTodoPrefab = m_ShellTodoBuffPrefab;
+        effectPrototype.m_ShellTodoPrefab = m_ShellTodoBuffPrefab;
 
         EffectItem effectItem = Instantiate(m_EffectItemPrefab);
         effectItem.m_MaxDuration = m_ItemDuration;
         effectItem.m_EffectPrototype = effectPrototype;
+        effectItem.SetItemSprite(m_ItemSprite);
+
+        effectPrototype.transform.parent = effectItem.transform;
 
         return effectItem;
     }

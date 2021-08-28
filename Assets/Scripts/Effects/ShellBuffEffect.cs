@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShellBuffEffect : Effect, IShellModifier
+public class ShellBuffEffect : Effect, IShellModifier, IPassThroughable
 {
-    public BaseShellTodo shellTodoPrefab;
+    public BaseShellTodo m_ShellTodoPrefab;
 
     public override EffectEnum GetEffectType()
     {
@@ -13,11 +13,14 @@ public class ShellBuffEffect : Effect, IShellModifier
 
     public override Effect Clone()
     {
-        return base.Clone();
+        ShellBuffEffect effectInstance = base.Clone() as ShellBuffEffect;
+        effectInstance.m_ShellTodoPrefab = m_ShellTodoPrefab;
+
+        return effectInstance;
     }
 
     public void Modify(Shell shell)
     {
-        shell.AddExplodeTodo(shellTodoPrefab.Clone());
+        shell.AddExplodeTodo(m_ShellTodoPrefab.Clone());
     }
 }

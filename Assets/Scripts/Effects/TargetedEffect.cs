@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TargetedEffect : Effect, IPassThroughable
+public class TargetedEffect : Effect
 {
     public override EffectEnum GetEffectType()
     {

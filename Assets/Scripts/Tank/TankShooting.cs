@@ -86,7 +86,10 @@ public class TankShooting : MonoBehaviour
 
     private void OnCanonCreateShell(Shell shell)
     {
-        shell.AddExplodeTodo(defaultShellExpodeTodoPrefab.Clone());
+        if(m_ShellModifiers.Count == 0)
+        {
+            shell.AddExplodeTodo(defaultShellExpodeTodoPrefab.Clone());
+        }
 
         for (int i = 0; i < m_ShellModifiers.Count; i++)
         {

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public abstract class BaseItem : MonoBehaviour
 {
-    private Image m_ItemImage;
+    [SerializeField] private Image m_ItemImage;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -14,6 +14,7 @@ public abstract class BaseItem : MonoBehaviour
         if(tankInfo != null)
         {
             OnTankCollect(tankInfo);
+            Destroy();
         }
     }
 
@@ -24,7 +25,7 @@ public abstract class BaseItem : MonoBehaviour
         m_ItemImage.sprite = sprite;
     }
 
-    public void Destroy()
+    public virtual void Destroy()
     {
         Destroy(this.gameObject);
     }

@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour
     public CameraControl m_CameraControl;   
     public Text m_MessageText;              
     public GameObject m_TankPrefab;         
-    public TankManager[] m_Tanks;           
+    public TankManager[] m_Tanks;
+    public ItemSpawner m_ItemSpawner;
 
 
     private int m_RoundNumber;              
@@ -82,6 +83,8 @@ public class GameManager : MonoBehaviour
         ResetAllTanks();
         DisableTankControl();
 
+        m_ItemSpawner.SetActive(true);
+
         m_CameraControl.SetStartPositionAndSize();
 
         m_RoundNumber++;
@@ -108,6 +111,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator RoundEnding()
     {
         DisableTankControl();
+        m_ItemSpawner.SetActive(false);
 
         m_RoundWinner = GetRoundWinner();
 

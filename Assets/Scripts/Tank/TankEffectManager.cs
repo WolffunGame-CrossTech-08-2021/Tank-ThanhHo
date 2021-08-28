@@ -69,7 +69,13 @@ public class TankEffectManager : MonoBehaviour
             m_TankInfo.m_TankMovement.AddMovementModifier(effect as IMovementModifier);
         }
 
+        if(effect is IShellModifier)
+        {
+            m_TankInfo.m_TankShooting.AddShellModifier(effect as IShellModifier);
+        }
+
         m_Effects.Add(effect);
+        effect.transform.parent = m_TankInfo.transform;
         effect.m_Target = m_TankInfo;
         effect.StartEffect();
     }
@@ -100,6 +106,13 @@ public class TankEffectManager : MonoBehaviour
         {
             m_TankInfo.m_TankMovement.RemoveMovementModifier(effect as IMovementModifier);
         }
+
+        if(effect is IShellModifier)
+        {
+            m_TankInfo.m_TankShooting.RemoveShellModifier(effect as IShellModifier);
+        }
+
+        effect.transform.parent = null;
 
         return true;
     }

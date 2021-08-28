@@ -27,4 +27,10 @@ public class EffectItem : BaseItem
             Destroy();
         }
     }
+
+    public override void Destroy()
+    {
+        m_EffectPrototype.Destroy();
+        base.Destroy();
+    }
 }

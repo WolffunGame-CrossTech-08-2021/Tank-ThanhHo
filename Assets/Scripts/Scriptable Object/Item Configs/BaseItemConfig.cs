@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class BaseItemConfig : ScriptableObject
 {
-    [SerializeField] Sprite m_ItemSprite;
+    [SerializeField] protected Sprite m_ItemSprite;
 
     public abstract BaseItem GetItem();
 }
